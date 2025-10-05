@@ -1,0 +1,1 @@
+# yamatanooroch.github.io
