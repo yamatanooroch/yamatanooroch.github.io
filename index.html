@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>My Page</title>
+    <link type="text/css" href="static/css/styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="static/css/index.css" />
+</head>
+
+<body>
+    <!-- 第一页：主页面 -->
+    <section class="page-section">
+        <canvas class="bg-glow" id="bgGlow"></canvas>
+        <div class="main-content">
+            <div class="left-img">
+                <img src="imerge/star.png" id="star-img" alt="star" />
+            </div>
+            <div class="center-text">
+                <span style="font-size:7vw;">BE SLEEPLY !</span><br>
+                <span class="creative"> &nbsp &nbsp &nbsp CREATIVE!</span><br>
+                <span class="and">AND</span> <span class="cool">LAZY!</span>
+            </div>
+            <div class="right-geo">
+                <img src="imerge/mogu.png" id="mogu-img" alt="mogu" />
+            </div>
+            <button class="contact-btn" onclick="window.location.href='intro.html'">introduction</button>
+            <!-- <button class="view-btn" onclick="scrollToView()" style="position: absolute; bottom: 50px; right: 50px; background: linear-gradient(45deg, #39ff14, #00ff41); color: black; border: none; padding: 10px 20px; border-radius: 25px; font-weight: bold; cursor: pointer; z-index: 20; box-shadow: 0 0 20px rgba(57, 255, 20, 0.6); transition: all 0.3s ease;">VIEW</button> -->
+            <div class="bottom-tip" onclick="scrollToAscii()">SCROLL CAREFULLY, IT'S SMOOTH<br>小・心・地・滑</div>
+            <div class="scroll-indicator"></div>
+
+            <div class="music-player"
+                style="position:absolute; top:40px; left:40px; z-index:30; background:rgba(20,20,20,0.8); border-radius:16px; box-shadow:0 0 10px #14ffeb; padding:18px 24px; display:flex; align-items:center; gap:16px;">
+                <audio id="main-audio" src="static/assets/music.mp3" preload="auto"></audio>
+                <button id="volume-btn"
+                    style="background:#fff; color:#14ffeb; border:2px solid #14ffeb; border-radius:50%; width:40px; height:40px; font-size:20px; font-weight:bold; cursor:pointer; position:relative;">🔊
+                    <span id="volume-tip"
+                        style="display:none; position:absolute; left:50%; top:-32px; transform:translateX(-50%); background:rgba(20,20,20,0.95); color:#14ffeb; padding:4px 12px; border-radius:8px; font-size:14px; white-space:nowrap; z-index:100; box-shadow:0 0 8px #14ffeb;">长按调节音量~</span>
+                </button>
+                <div style="position:relative; width:220px; height:24px; margin-left:8px;">
+                    <div
+                        style="position:absolute; top:12px; left:0; width:200px; height:2px; background:#ccc; border-radius:2px;">
+                    </div>
+                    <div id="volume-bar"
+                        style="position:absolute; top:7px; left:0; height:12px; background:#14ffeb; border-radius:6px; width:10%; transition:width 0.1s;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 第二页：ASCII动画页面 -->
+    <section class="page-section ascii-section">
+        <div class="ascii-container">
+            <div class="window-frame">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <div class="window-control"></div>
+                        <div class="window-control"></div>
+                        <div class="window-control"></div>
+                    </div>
+                    <div class="window-title">ASCII ANIMATION</div>
+                    <div class="window-buttons">
+                        <div class="window-btn btn-minimize"></div>
+                        <div class="window-btn btn-restore"></div>
+                        <div class="window-btn btn-close"></div>
+                    </div>
+                </div>
+                <div class="ascii-display">
+                    <pre id="asciiContainer"></pre>
+                </div>
+            </div>
+        </div>
+        <div class="bottom-tip" onclick="scrollToContact()"
+            style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 20;">NEXT
+            PAGE<br>下一页</div>
+    </section>
+
+    <!-- 第三页：联系页面 -->
+    <section class="page-section contact-section">
+        <div class="contact-container">
+            <div class="left-nav">
+                <div class="nav-menu">
+                    <div class="nav-item active" data-target="home">
+                        <span class="chinese">主页</span>HOME
+                    </div>
+                    <div class="nav-item" data-target="videos">
+                        <span class="chinese">视频</span>VIDEOS
+                    </div>
+                    <div class="nav-item" data-target="photos">
+                        <span class="chinese">图片</span>PHOTOS
+                    </div>
+                    <div class="nav-item" data-target="contact">
+                        <span class="chinese">联系</span>CONTACT
+                    </div>
+                </div>
+                <div class="contact-info">
+                    <div class="contact-title">GET IN TOUCH ///</div>
+                    <div class="contact-details">
+                        <div><strong>Email:</strong> 3583818830@qq.com</div>
+                        <div><strong>Github:</strong> yamatanooroch</div>
+                        <div><strong>QQ:</strong> 3583818830</div>
+                    </div>
+                </div>
+                <!-- <div class="copyright">
+                    蜀ICP备20220223号-2
+                </div> -->
+            </div>
+            <div class="buildings-container">
+                <div class="building building-1" id="building1"></div>
+                <div class="building building-2" id="building2"></div>
+                <div class="building building-3" id="building3"></div>
+                <div class="building building-4" id="building4"></div>
+                <div class="building building-5" id="building5"></div>
+                <div class="bottom-text">去边界以外寻找导航设计!</div>
+            </div>
+        </div>
+        <div class="bottom-tip" onclick="scrollToCreativity()"
+            style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 20;">NEXT
+            PAGE<br>下一页</div>
+    </section>
+
+    <!-- 第四页：创意页面 -->
+    <section class="page-section creativity-section">
+        <div class="creativity-container">
+            <div class="left-content">
+                <div class="main-text">
+                    <h1>FULL OF CREATIVITY</h1>
+                    <h2>ABLE TO <span class="highlight">IMAGINE</span></h2>
+                    <h3><span class="outline">&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+                            &nbsp&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+                            &nbsp &nbsp &nbsp CLICK</span> THESE CIRCLES</h3>
+                </div>
+            </div>
+            <div class="right-content">
+                <img src="imerge/mogu.png" id="mogu-brain" alt="mogu brain" />
+            </div>
+            <div class="physics-canvas-container">
+                <canvas id="physicsCanvas"></canvas>
+            </div>
+        </div>
+        <div class="bottom-tip" onclick="scrollToView()"
+            style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 20;">NEXT
+            PAGE<br>下一页</div>
+    </section>
+
+    <!-- 第五页：视觉页面 -->
+    <section class="page-section view-section">
+        <div class="scrolling-text-container">
+            <!-- 奇数行向左滚动 -->
+            <div class="text-row odd-row">
+                <div class="scrolling-text left">VIEW FIRST VISUAL FIRST VIEW FIRST VISUAL FIRST VIEW FIRST VISUAL FIRST
+                    VIEW FIRST VISUAL FIRST </div>
+            </div>
+            <div class="text-row even-row">
+                <div class="scrolling-text right">STARE VISUAL STARE VISUAL STARE VISUAL STARE VISUAL STARE VISUAL STARE
+                    VISUAL STARE </div>
+            </div>
+            <div class="text-row odd-row">
+                <div class="scrolling-text left">VIEW FIRST VISUAL FIRST VIEW FIRST VISUAL FIRST VIEW FIRST VISUAL FIRST
+                    VIEW FIRST VISUAL FIRST </div>
+            </div>
+            <div class="text-row even-row">
+                <div class="scrolling-text right">STARE VISUAL STARE VISUAL STARE VISUAL STARE VISUAL STARE VISUAL STARE
+                    VISUAL STARE VISUAL STARE </div>
+            </div>
+            <div class="text-row odd-row">
+                <div class="scrolling-text left">VIEW FIRST VISUAL FIRST VIEW FIRST VISUAL FIRST VIEW FIRST VISUAL FIRST
+                    VIEW FIRST VISUAL FIRST </div>
+            </div>
+            <div class="text-row even-row">
+                <div class="scrolling-text right">STARE VISUAL STARE VISUAL STARE VISUAL STARE VISUAL STARE VISUAL STARE
+                    VISUAL STARE VISUAL STARE </div>
+            </div>
+        </div>
+
+        <div class="eye-container">
+            <div class="eye-background">
+                <div class="eye-pupil">
+                    <div class="eye-highlight"></div>
+                </div>
+                <div class="eye-lines">
+                    <div class="line line-1"></div>
+                    <div class="line line-2"></div>
+                    <div class="line line-3"></div>
+                    <div class="line line-4"></div>
+                </div>
+            </div>
+            <div class="corner-markers">
+                <div class="corner corner-tl">视</div>
+                <div class="corner corner-tr">觉</div>
+                <div class="corner corner-bl">至</div>
+                <div class="corner corner-br">上</div>
+            </div>
+        </div>
+
+        <div class="bottom-tip" onclick="scrollToTop()"
+            style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 20;">BACK TO
+            TOP<br>返回顶部</div>
+    </section>
+
+    <!-- 恭喜页面 -->
+    <div id="congratulationModal" class="modal">
+        <div class="modal-content">
+            <h2> CONGRATULATIONS! </h2>
+            <p>You've activated all the creativity bulbs!</p>
+            <p>你还怪闲的（）</p>
+            <button onclick="closeModal()">Continue</button>
+        </div>
+    </div>
+    <script>
+        // 鼠标跟随绿色光斑
+        const canvas = document.getElementById('bgGlow');
+        const ctx = canvas.getContext('2d');
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+        document.addEventListener('mousemove', e => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+        function drawGlow() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // 主光斑
+            let grad1 = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 350);
+            grad1.addColorStop(0, 'rgba(20,255,235,0.45)');
+            grad1.addColorStop(1, 'rgba(20,255,235,0)');
+            ctx.globalCompositeOperation = 'lighter';
+            ctx.fillStyle = grad1;
+            ctx.fillRect(mouseX - 350, mouseY - 350, 700, 700);
+            // 边缘光斑
+            let grad2 = ctx.createRadialGradient(canvas.width - mouseX, canvas.height - mouseY, 0, canvas.width - mouseX, canvas.height - mouseY, 300);
+            grad2.addColorStop(0, 'rgba(20,255,235,0.25)');
+            grad2.addColorStop(1, 'rgba(20,255,235,0)');
+            ctx.fillStyle = grad2;
+            ctx.fillRect(canvas.width - mouseX - 300, canvas.height - mouseY - 300, 600, 600);
+            ctx.globalCompositeOperation = 'source-over';
+        }
+        setInterval(drawGlow, 16);
+
+        // star.png旋转动画
+        const starImg = document.getElementById('star-img');
+        let starAngle = 0;
+        function rotateStar() {
+            starAngle += 1.2;
+            starImg.style.transform = `rotate(${starAngle}deg)`;
+            requestAnimationFrame(rotateStar);
+        }
+
+        rotateStar();
+
+        // mogu图片随机移动动画
+        const moguImg = document.getElementById('mogu-img');
+        let isAnimating = false;
+
+        moguImg.addEventListener('mouseenter', function (e) {
+            if (isAnimating) return;
+
+            isAnimating = true;
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+
+            // 生成随机角度和100px距离
+            const angle = Math.random() * 2 * Math.PI;
+            const distance = 100;
+
+            // 计算新位置
+            const newX = mouseX + Math.cos(angle) * distance;
+            const newY = mouseY + Math.sin(angle) * distance;
+
+            // 获取图片当前位置
+            const rect = moguImg.getBoundingClientRect();
+            const currentX = rect.left + rect.width / 2;
+            const currentY = rect.top + rect.height / 2;
+
+            // 计算移动距离
+            const moveX = newX - currentX;
+            const moveY = newY - currentY;
+
+            // 应用变换
+            moguImg.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.1)`;
+            moguImg.style.filter = 'brightness(1.2) drop-shadow(0 0 20px rgba(20, 255, 235, 0.8))';
+
+            // 1秒后恢复原位
+            setTimeout(() => {
+                moguImg.style.transform = 'translate(0, 0) scale(1)';
+                moguImg.style.filter = 'brightness(1) drop-shadow(0 0 15px rgba(20, 255, 235, 0.3))';
+                isAnimating = false;
+            }, 1000);
+        });
+
+        // 滚动功能
+        function scrollToAscii() {
+            document.querySelector('.ascii-section').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        function scrollToContact() {
+            document.querySelector('.contact-section').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        function scrollToCreativity() {
+            document.querySelector('.creativity-section').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        function scrollToTop() {
+            document.querySelector('.page-section').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // 滚动到第五页的函数
+        function scrollToView() {
+            document.querySelector('.view-section').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // 眼睛跟踪鼠标效果
+        function initEyeTracking() {
+            const eyePupil = document.querySelector('.eye-pupil');
+            const eyeBackground = document.querySelector('.eye-background');
+            const viewSection = document.querySelector('.view-section');
+
+            if (!eyePupil || !eyeBackground || !viewSection) return;
+
+            let isEyeTrackingActive = false;
+
+            // 使用Intersection Observer检测第五页是否可见
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.target === viewSection) {
+                        isEyeTrackingActive = entry.isIntersecting;
+                        if (!isEyeTrackingActive) {
+                            // 当离开第五页时，重置瞳孔位置
+                            eyePupil.style.transform = 'translate(0px, 0px)';
+                        }
+                    }
+                });
+            }, {
+                threshold: 0.3 // 当30%可见时激活
+            });
+
+            observer.observe(viewSection);
+
+            document.addEventListener('mousemove', function (e) {
+                if (!isEyeTrackingActive) return;
+
+                // 获取眼球中心位置
+                const eyeRect = eyeBackground.getBoundingClientRect();
+                const eyeCenterX = eyeRect.left + eyeRect.width / 2;
+                const eyeCenterY = eyeRect.top + eyeRect.height / 2;
+
+                // 计算鼠标相对于眼球中心的位置
+                const mouseX = e.clientX - eyeCenterX;
+                const mouseY = e.clientY - eyeCenterY;
+
+                // 计算距离和角度
+                const distance = Math.sqrt(mouseX * mouseX + mouseY * mouseY);
+                const angle = Math.atan2(mouseY, mouseX);
+
+                // 限制瞳孔移动范围（眼球半径的30%）
+                const maxDistance = 45; // 眼球半径150px的30%
+                const limitedDistance = Math.min(distance * 0.3, maxDistance);
+
+                // 计算瞳孔新位置
+                const pupilX = Math.cos(angle) * limitedDistance;
+                const pupilY = Math.sin(angle) * limitedDistance;
+
+                // 应用变换
+                eyePupil.style.transform = `translate(${pupilX}px, ${pupilY}px)`;
+
+                // 让高光也跟着移动，但移动幅度更小
+                const eyeHighlight = eyePupil.querySelector('.eye-highlight');
+                if (eyeHighlight) {
+                    const highlightX = pupilX * 0.3;
+                    const highlightY = pupilY * 0.3;
+                    eyeHighlight.style.transform = `translate(${highlightX}px, ${highlightY}px)`;
+                }
+            });
+        }
+
+        // 第三页导航交互
+        document.addEventListener('DOMContentLoaded', function () {
+            const navItems = document.querySelectorAll('.nav-item');
+
+            navItems.forEach(item => {
+                item.addEventListener('mouseenter', function () {
+                    // 移除所有active类
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    // 添加active类到当前项
+                    this.classList.add('active');
+                });
+            });
+
+            // 创建建筑物窗户
+            createBuildingWindows();
+
+            // 设置第三页滑动动画观察器
+            setupThirdPageAnimation();
+
+            // 初始化物理引擎
+            initPhysicsEngine();
+
+            // 初始化眼睛跟踪效果
+            initEyeTracking();
+        });
+
+        // 设置第三页动画观察器
+        function setupThirdPageAnimation() {
+            const contactSection = document.querySelector('.contact-section');
+            const navItems = document.querySelectorAll('.nav-item');
+
+            // 初始状态：移除所有动画，隐藏导航项
+            navItems.forEach(item => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateX(-100px)';
+                item.style.animation = 'none';
+            });
+
+            // 创建观察器
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // 页面进入视窗，启动动画
+                        startNavAnimation();
+                    } else {
+                        // 页面离开视窗，重置动画
+                        resetNavAnimation();
+                    }
+                });
+            }, {
+                threshold: 0.3 // 当30%的页面可见时触发
+            });
+
+            observer.observe(contactSection);
+        }
+
+        // 启动导航动画
+        function startNavAnimation() {
+            const navItems = document.querySelectorAll('.nav-item');
+
+            navItems.forEach((item, index) => {
+                // 重新应用动画
+                item.style.animation = `slideInLeft 0.6s ease forwards`;
+                item.style.animationDelay = `${0.1 * (index + 1)}s`;
+            });
+        }
+
+        // 重置导航动画
+        function resetNavAnimation() {
+            const navItems = document.querySelectorAll('.nav-item');
+
+            navItems.forEach(item => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateX(-100px)';
+                item.style.animation = 'none';
+            });
+        }
+
+        // 创建建筑物窗户
+        function createBuildingWindows() {
+            const buildings = [
+                { id: 'building1', windows: 12 },
+                { id: 'building2', windows: 20 },
+                { id: 'building3', windows: 30 },
+                { id: 'building4', windows: 16 },
+                { id: 'building5', windows: 10 }
+            ];
+
+            buildings.forEach(building => {
+                const buildingEl = document.getElementById(building.id);
+                if (!buildingEl) return;
+
+                for (let i = 0; i < building.windows; i++) {
+                    const window = document.createElement('div');
+                    window.className = 'window';
+
+                    // 随机决定是否点亮窗户
+                    if (Math.random() > 0.6) {
+                        window.classList.add('lit');
+                    }
+
+                    // 随机位置
+                    const x = 10 + (i % 4) * 18;
+                    const y = 15 + Math.floor(i / 4) * 20;
+
+                    window.style.left = x + 'px';
+                    window.style.top = y + 'px';
+
+                    buildingEl.appendChild(window);
+                }
+            });
+        }
+
+        // 第四页物理引擎
+        class PhysicsEngine {
+            constructor(canvas) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.circles = [];
+                this.gravity = 0.3;
+                this.friction = 0.98;
+                this.bounceDamping = 0.8;
+                this.scrollForce = 0;
+                this.totalCircles = 15;
+                this.filledCircles = 0;
+
+                this.resizeCanvas();
+                this.initCircles();
+                this.animate();
+
+                window.addEventListener('resize', () => this.resizeCanvas());
+                canvas.addEventListener('click', (e) => this.handleClick(e));
+
+                // 监听滚动
+                let lastScrollY = window.scrollY;
+                window.addEventListener('scroll', () => {
+                    const currentScrollY = window.scrollY;
+                    const scrollDelta = currentScrollY - lastScrollY;
+                    this.scrollForce = scrollDelta * 0.1;
+                    lastScrollY = currentScrollY;
+                });
+            }
+
+            resizeCanvas() {
+                this.canvas.width = this.canvas.offsetWidth;
+                this.canvas.height = this.canvas.offsetHeight;
+            }
+
+            initCircles() {
+                this.circles = [];
+                for (let i = 0; i < this.totalCircles; i++) {
+                    this.circles.push({
+                        x: Math.random() * this.canvas.width * 3,
+                        y: Math.random() * this.canvas.height * 3,
+                        vx: (Math.random() - 0.5) * 4,
+                        vy: (Math.random() - 0.5) * 4,
+                        radius: 15 + Math.random() * 10,
+                        filled: false,
+                        color: '#14ffeb'
+                    });
+                }
+            }
+
+            handleClick(e) {
+                const rect = this.canvas.getBoundingClientRect();
+                const clickX = e.clientX - rect.left;
+                const clickY = e.clientY - rect.top;
+
+                this.circles.forEach(circle => {
+                    const dist = Math.sqrt((clickX - circle.x) ** 2 + (clickY - circle.y) ** 2);
+                    if (dist < circle.radius && !circle.filled) {
+                        circle.filled = true;
+                        this.filledCircles++;
+
+                        // 添加点击效果
+                        circle.vx += (Math.random() - 0.5) * 5;
+                        circle.vy -= Math.random() * 3 + 2;
+
+                        if (this.filledCircles === this.totalCircles) {
+                            setTimeout(() => this.showCongratulations(), 500);
+                        }
+                    }
+                });
+            }
+
+            showCongratulations() {
+                document.getElementById('congratulationModal').style.display = 'block';
+            }
+
+            animate() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+                this.circles.forEach(circle => {
+                    // 应用重力
+                    circle.vy += this.gravity;
+
+                    // 应用滚动力
+                    circle.vy += this.scrollForce;
+
+                    // 应用摩擦力
+                    circle.vx *= this.friction;
+                    circle.vy *= this.friction;
+
+                    // 更新位置
+                    circle.x += circle.vx;
+                    circle.y += circle.vy;
+
+                    // 边界碰撞
+                    if (circle.x < circle.radius) {
+                        circle.x = circle.radius;
+                        circle.vx *= -this.bounceDamping;
+                    }
+                    if (circle.x > this.canvas.width - circle.radius) {
+                        circle.x = this.canvas.width - circle.radius;
+                        circle.vx *= -this.bounceDamping;
+                    }
+                    if (circle.y < circle.radius) {
+                        circle.y = circle.radius;
+                        circle.vy *= -this.bounceDamping;
+                    }
+                    if (circle.y > this.canvas.height - circle.radius) {
+                        circle.y = this.canvas.height - circle.radius;
+                        circle.vy *= -this.bounceDamping;
+                    }
+
+                    // 圆球碰撞
+                    this.circles.forEach(other => {
+                        if (other !== circle) {
+                            const dx = other.x - circle.x;
+                            const dy = other.y - circle.y;
+                            const distance = Math.sqrt(dx * dx + dy * dy);
+                            const minDistance = circle.radius + other.radius;
+
+                            if (distance < minDistance) {
+                                const angle = Math.atan2(dy, dx);
+                                const targetX = circle.x + Math.cos(angle) * minDistance;
+                                const targetY = circle.y + Math.sin(angle) * minDistance;
+                                const ax = (targetX - other.x) * 0.1;
+                                const ay = (targetY - other.y) * 0.1;
+
+                                circle.vx -= ax;
+                                circle.vy -= ay;
+                                other.vx += ax;
+                                other.vy += ay;
+                            }
+                        }
+                    });
+
+                    // 绘制圆球
+                    this.ctx.beginPath();
+                    this.ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
+
+                    if (circle.filled) {
+                        this.ctx.fillStyle = circle.color;
+                        this.ctx.fill();
+                        this.ctx.shadowColor = circle.color;
+                        this.ctx.shadowBlur = 15;
+                    } else {
+                        this.ctx.strokeStyle = circle.color;
+                        this.ctx.lineWidth = 3;
+                        this.ctx.stroke();
+                    }
+
+                    this.ctx.shadowBlur = 0;
+                });
+
+                // 减少滚动力
+                this.scrollForce *= 0.9;
+
+                requestAnimationFrame(() => this.animate());
+            }
+        }
+
+        // 恭喜弹窗功能
+        function closeModal() {
+            document.getElementById('congratulationModal').style.display = 'none';
+        }
+
+        // 初始化物理引擎
+        let physicsEngine;
+        function initPhysicsEngine() {
+            const canvas = document.getElementById('physicsCanvas');
+            if (canvas) {
+                physicsEngine = new PhysicsEngine(canvas);
+            }
+        }
+
+    </script>
+
+
+    <script type="module">
+
+
+
+
+
+
+        import { parseGIF, decompressFrames } from 'https://cdn.jsdelivr.net/npm/gifuct-js@2.1.2/+esm';
+
+        // 获取ASCII显示容器
+        const asciiContainer = document.getElementById('asciiContainer');
+        asciiContainer.style.color = '#14ffeb';
+        asciiContainer.style.fontFamily = 'monospace';
+        asciiContainer.style.fontSize = '8px';
+        asciiContainer.style.lineHeight = '1.0';
+        asciiContainer.style.margin = '0';
+        asciiContainer.style.padding = '0';
+        asciiContainer.style.textAlign = 'center';
+        asciiContainer.style.width = '100%';
+        asciiContainer.style.height = '100%';
+        asciiContainer.style.display = 'flex';
+        asciiContainer.style.alignItems = 'center';
+        asciiContainer.style.justifyContent = 'center';
+        asciiContainer.style.whiteSpace = 'pre';
+        asciiContainer.style.overflow = 'hidden';
+
+        const scale_nums = 2; // 控制ASCII分辨率，数值越小分辨率越高
+        let texts = [];
+        let current_text_index = 0;
+
+        function create_texts(data, width, height) {
+            let text = "";
+            const levels = [["@", "#", "S", "%", "?", "*", "+", ";", ":", ",", ".", " "], ["0", "1"], [".", "*"], [" "]];
+            for (let y = 0; y < height; y += scale_nums) {
+                let row = "";
+                for (let x = 0; x < width; x += scale_nums) {
+                    const i = (y * width + x) * 4;
+                    const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+                    const level = levels[0][Math.floor(avg / 255 * (levels[0].length - 1))];
+                    row += level;
+                }
+                text += row + "\n";
+            }
+            return text;
+        }
+
+        const ascllbox = {
+            init() {
+                fetch('imerge/head.gif')
+                    .then(response => response.arrayBuffer())
+                    .then(buffer => {
+                        const gif = parseGIF(buffer);
+                        const frames = decompressFrames(gif, true);
+                        texts = frames.map(frame => {
+                            // 创建canvas获取像素数据
+                            const canvas = document.createElement('canvas');
+                            canvas.width = frame.dims.width;
+                            canvas.height = frame.dims.height;
+                            const ctx = canvas.getContext('2d');
+                            const imageData = new ImageData(frame.patch, frame.dims.width, frame.dims.height);
+                            ctx.putImageData(imageData, 0, 0);
+                            const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+                            return create_texts(data, canvas.width, canvas.height);
+                        });
+                        // 定时切换显示
+                        setInterval(() => {
+                            current_text_index = (current_text_index + 1) % texts.length;
+                            asciiContainer.innerText = texts[current_text_index];
+                        }, 80);
+                    })
+                    .catch(error => console.error('Error loading GIF:', error));
+            }
+        };
+        ascllbox.init();
+
+    </script>
+    <script src="static/js/music-player.js"></script>
+</body>
+
+</html>
