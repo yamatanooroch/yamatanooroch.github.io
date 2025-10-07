@@ -204,8 +204,8 @@
     <div id="congratulationModal" class="modal">
         <div class="modal-content">
             <h2> CONGRATULATIONS! </h2>
-            <p>You've activated all the creativity bulbs!</p>
-            <p>你还怪闲的（）</p>
+            <p>You've lit up all the creativity bulbs!</p>
+            <p>所有创意灯泡都被点亮了！💡</p>
             <button onclick="closeModal()">Continue</button>
         </div>
     </div>
@@ -516,6 +516,17 @@
                 this.totalCircles = 15;
                 this.filledCircles = 0;
 
+                // 预加载灯泡图片
+                this.lightOffImg = new Image();
+                this.lightOnImg = new Image();
+                this.lightOffImg.src = 'imerge/lightoff.png';
+                this.lightOnImg.src = 'imerge/lighton.png';
+
+                // 灯泡的实际大小和碰撞区域（基于灯泡轮廓）
+                this.bulbWidth = 40;
+                this.bulbHeight = 60;
+                this.bulbCollisionRadius = 20; // 灯泡主体的碰撞半径
+
                 this.resizeCanvas();
                 this.initCircles();
                 this.animate();
@@ -542,13 +553,15 @@
                 this.circles = [];
                 for (let i = 0; i < this.totalCircles; i++) {
                     this.circles.push({
-                        x: Math.random() * this.canvas.width * 3,
-                        y: Math.random() * this.canvas.height * 3,
+                        x: Math.random() * this.canvas.width,
+                        y: Math.random() * this.canvas.height,
                         vx: (Math.random() - 0.5) * 4,
                         vy: (Math.random() - 0.5) * 4,
-                        radius: 15 + Math.random() * 10,
-                        filled: false,
-                        color: '#14ffeb'
+                        radius: this.bulbCollisionRadius, // 使用灯泡碰撞半径
+                        filled: false, // false表示灯灭，true表示灯亮
+                        color: '#14ffeb',
+                        width: this.bulbWidth,
+                        height: this.bulbHeight
                     });
                 }
             }
@@ -559,8 +572,16 @@
                 const clickY = e.clientY - rect.top;
 
                 this.circles.forEach(circle => {
-                    const dist = Math.sqrt((clickX - circle.x) ** 2 + (clickY - circle.y) ** 2);
-                    if (dist < circle.radius && !circle.filled) {
+                    // 检查点击是否在灯泡的碰撞区域内（椭圆形区域）
+                    const dx = clickX - circle.x;
+                    const dy = clickY - circle.y;
+
+                    // 使用椭圆碰撞检测，灯泡主体区域
+                    const normalizedX = dx / (circle.width * 0.4); // 宽度的40%作为碰撞区域
+                    const normalizedY = dy / (circle.height * 0.5); // 高度的50%作为碰撞区域
+                    const distance = Math.sqrt(normalizedX * normalizedX + normalizedY * normalizedY);
+
+                    if (distance <= 1 && !circle.filled) {
                         circle.filled = true;
                         this.filledCircles++;
 
@@ -597,25 +618,28 @@
                     circle.x += circle.vx;
                     circle.y += circle.vy;
 
-                    // 边界碰撞
-                    if (circle.x < circle.radius) {
-                        circle.x = circle.radius;
+                    // 边界碰撞（考虑灯泡图片的实际尺寸）
+                    const halfWidth = circle.width / 2;
+                    const halfHeight = circle.height / 2;
+
+                    if (circle.x < halfWidth) {
+                        circle.x = halfWidth;
                         circle.vx *= -this.bounceDamping;
                     }
-                    if (circle.x > this.canvas.width - circle.radius) {
-                        circle.x = this.canvas.width - circle.radius;
+                    if (circle.x > this.canvas.width - halfWidth) {
+                        circle.x = this.canvas.width - halfWidth;
                         circle.vx *= -this.bounceDamping;
                     }
-                    if (circle.y < circle.radius) {
-                        circle.y = circle.radius;
+                    if (circle.y < halfHeight) {
+                        circle.y = halfHeight;
                         circle.vy *= -this.bounceDamping;
                     }
-                    if (circle.y > this.canvas.height - circle.radius) {
-                        circle.y = this.canvas.height - circle.radius;
+                    if (circle.y > this.canvas.height - halfHeight) {
+                        circle.y = this.canvas.height - halfHeight;
                         circle.vy *= -this.bounceDamping;
                     }
 
-                    // 圆球碰撞
+                    // 灯泡碰撞检测（基于灯泡轮廓的圆形区域）
                     this.circles.forEach(other => {
                         if (other !== circle) {
                             const dx = other.x - circle.x;
@@ -638,22 +662,45 @@
                         }
                     });
 
-                    // 绘制圆球
-                    this.ctx.beginPath();
-                    this.ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
+                    // 绘制灯泡图片
+                    const img = circle.filled ? this.lightOnImg : this.lightOffImg;
 
-                    if (circle.filled) {
-                        this.ctx.fillStyle = circle.color;
-                        this.ctx.fill();
-                        this.ctx.shadowColor = circle.color;
-                        this.ctx.shadowBlur = 15;
+                    // 如果图片已加载完成，则绘制图片
+                    if (img.complete && img.naturalHeight !== 0) {
+                        // 添加发光效果
+                        if (circle.filled) {
+                            this.ctx.shadowColor = '#ffff00';
+                            this.ctx.shadowBlur = 20;
+                        }
+
+                        // 绘制灯泡图片，以circle.x, circle.y为中心
+                        this.ctx.drawImage(
+                            img,
+                            circle.x - circle.width / 2,
+                            circle.y - circle.height / 2,
+                            circle.width,
+                            circle.height
+                        );
+
+                        this.ctx.shadowBlur = 0;
                     } else {
-                        this.ctx.strokeStyle = circle.color;
-                        this.ctx.lineWidth = 3;
-                        this.ctx.stroke();
-                    }
+                        // 图片未加载完成时，绘制占位圆圈
+                        this.ctx.beginPath();
+                        this.ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
 
-                    this.ctx.shadowBlur = 0;
+                        if (circle.filled) {
+                            this.ctx.fillStyle = '#ffff00';
+                            this.ctx.fill();
+                            this.ctx.shadowColor = '#ffff00';
+                            this.ctx.shadowBlur = 15;
+                        } else {
+                            this.ctx.strokeStyle = circle.color;
+                            this.ctx.lineWidth = 3;
+                            this.ctx.stroke();
+                        }
+
+                        this.ctx.shadowBlur = 0;
+                    }
                 });
 
                 // 减少滚动力
