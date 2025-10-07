@@ -561,7 +561,9 @@
                         filled: false, // false表示灯灭，true表示灯亮
                         color: '#14ffeb',
                         width: this.bulbWidth,
-                        height: this.bulbHeight
+                        height: this.bulbHeight,
+                        tilt: 0, // 倾斜角度（弧度）
+                        tiltVelocity: 0 // 倾斜速度
                     });
                 }
             }
@@ -588,6 +590,9 @@
                         // 添加点击效果
                         circle.vx += (Math.random() - 0.5) * 5;
                         circle.vy -= Math.random() * 3 + 2;
+
+                        // 添加倾斜效果
+                        circle.tilt += (Math.random() - 0.5) * 0.3;
 
                         if (this.filledCircles === this.totalCircles) {
                             setTimeout(() => this.showCongratulations(), 500);
@@ -618,6 +623,14 @@
                     circle.x += circle.vx;
                     circle.y += circle.vy;
 
+                    // 根据水平速度更新倾斜角度
+                    const targetTilt = circle.vx * 0.05; // 水平速度影响倾斜，限制倾斜幅度
+                    const maxTilt = Math.PI / 6; // 最大倾斜30度
+                    circle.tilt += (Math.max(-maxTilt, Math.min(maxTilt, targetTilt)) - circle.tilt) * 0.1;
+
+                    // 倾斜阻尼，让灯泡逐渐回到竖直状态
+                    circle.tilt *= 0.95;
+
                     // 边界碰撞（考虑灯泡图片的实际尺寸）
                     const halfWidth = circle.width / 2;
                     const halfHeight = circle.height / 2;
@@ -625,10 +638,12 @@
                     if (circle.x < halfWidth) {
                         circle.x = halfWidth;
                         circle.vx *= -this.bounceDamping;
+                        circle.tilt += Math.abs(circle.vx) * 0.01; // 边界碰撞产生倾斜
                     }
                     if (circle.x > this.canvas.width - halfWidth) {
                         circle.x = this.canvas.width - halfWidth;
                         circle.vx *= -this.bounceDamping;
+                        circle.tilt -= Math.abs(circle.vx) * 0.01;
                     }
                     if (circle.y < halfHeight) {
                         circle.y = halfHeight;
@@ -656,6 +671,11 @@
                                 circle.vy -= ay;
                                 other.vx += ax;
                                 other.vy += ay;
+
+                                // 碰撞时产生倾斜效果
+                                const impactTilt = ax * 0.02;
+                                circle.tilt += impactTilt;
+                                other.tilt -= impactTilt;
                             }
                         }
                     });
@@ -665,22 +685,32 @@
 
                     // 如果图片已加载完成，则绘制图片
                     if (img.complete && img.naturalHeight !== 0) {
+                        // 保存当前canvas状态
+                        this.ctx.save();
+
+                        // 移动到灯泡中心
+                        this.ctx.translate(circle.x, circle.y);
+
+                        // 应用倾斜角度
+                        this.ctx.rotate(circle.tilt);
+
                         // 添加发光效果
                         if (circle.filled) {
                             this.ctx.shadowColor = '#ffff00';
                             this.ctx.shadowBlur = 30; // 增强发光效果
                         }
 
-                        // 绘制灯泡图片，以circle.x, circle.y为中心
+                        // 绘制灯泡图片，以原点为中心
                         this.ctx.drawImage(
                             img,
-                            circle.x - circle.width / 2,
-                            circle.y - circle.height / 2,
+                            -circle.width / 2,
+                            -circle.height / 2,
                             circle.width,
                             circle.height
                         );
 
-                        this.ctx.shadowBlur = 0;
+                        // 恢复canvas状态
+                        this.ctx.restore();
                     } else {
                         // 图片未加载完成时，绘制占位圆圈
                         this.ctx.beginPath();
