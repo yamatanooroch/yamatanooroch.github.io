@@ -130,7 +130,7 @@
                     <h2>ABLE TO <span class="highlight">IMAGINE</span></h2>
                     <h3><span class="outline">&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
                             &nbsp&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-                            &nbsp &nbsp &nbsp CLICK</span> THESE CIRCLES</h3>
+                            &nbsp &nbsp &nbsp CLICK</span> THESE BULBS</h3>
                 </div>
             </div>
             <div class="right-content">
@@ -624,12 +624,12 @@
                     circle.y += circle.vy;
 
                     // 根据水平速度更新倾斜角度
-                    const targetTilt = circle.vx * 0.05; // 水平速度影响倾斜，限制倾斜幅度
-                    const maxTilt = Math.PI / 6; // 最大倾斜30度
-                    circle.tilt += (Math.max(-maxTilt, Math.min(maxTilt, targetTilt)) - circle.tilt) * 0.1;
+                    const targetTilt = circle.vx * 0.08; // 提高敏感度：水平速度影响倾斜
+                    const maxTilt = Math.PI / 4; // 最大倾斜45度
+                    circle.tilt += (Math.max(-maxTilt, Math.min(maxTilt, targetTilt)) - circle.tilt) * 0.2; // 更快趋近目标倾斜
 
-                    // 倾斜阻尼，让灯泡逐渐回到竖直状态
-                    circle.tilt *= 0.95;
+                    // 取消回正：不再使用阻尼强制返回竖直
+                    // circle.tilt *= 0.95; (已移除)
 
                     // 边界碰撞（考虑灯泡图片的实际尺寸）
                     const halfWidth = circle.width / 2;
