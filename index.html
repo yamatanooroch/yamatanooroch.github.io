@@ -561,9 +561,7 @@
                         filled: false, // false表示灯灭，true表示灯亮
                         color: '#14ffeb',
                         width: this.bulbWidth,
-                        height: this.bulbHeight,
-                        rotation: Math.random() * Math.PI * 2, // 随机初始旋转角度
-                        angularVelocity: (Math.random() - 0.5) * 0.02 // 角速度
+                        height: this.bulbHeight
                     });
                 }
             }
@@ -590,9 +588,6 @@
                         // 添加点击效果
                         circle.vx += (Math.random() - 0.5) * 5;
                         circle.vy -= Math.random() * 3 + 2;
-
-                        // 添加旋转效果
-                        circle.angularVelocity += (Math.random() - 0.5) * 0.1;
 
                         if (this.filledCircles === this.totalCircles) {
                             setTimeout(() => this.showCongratulations(), 500);
@@ -623,12 +618,6 @@
                     circle.x += circle.vx;
                     circle.y += circle.vy;
 
-                    // 根据移动速度更新旋转角度
-                    const speed = Math.sqrt(circle.vx * circle.vx + circle.vy * circle.vy);
-                    circle.angularVelocity += speed * 0.001; // 速度越快旋转越快
-                    circle.angularVelocity *= 0.98; // 角速度阻尼
-                    circle.rotation += circle.angularVelocity;
-
                     // 边界碰撞（考虑灯泡图片的实际尺寸）
                     const halfWidth = circle.width / 2;
                     const halfHeight = circle.height / 2;
@@ -636,22 +625,18 @@
                     if (circle.x < halfWidth) {
                         circle.x = halfWidth;
                         circle.vx *= -this.bounceDamping;
-                        circle.angularVelocity += Math.abs(circle.vx) * 0.005; // 边界碰撞产生旋转
                     }
                     if (circle.x > this.canvas.width - halfWidth) {
                         circle.x = this.canvas.width - halfWidth;
                         circle.vx *= -this.bounceDamping;
-                        circle.angularVelocity -= Math.abs(circle.vx) * 0.005;
                     }
                     if (circle.y < halfHeight) {
                         circle.y = halfHeight;
                         circle.vy *= -this.bounceDamping;
-                        circle.angularVelocity += Math.abs(circle.vy) * 0.005;
                     }
                     if (circle.y > this.canvas.height - halfHeight) {
                         circle.y = this.canvas.height - halfHeight;
                         circle.vy *= -this.bounceDamping;
-                        circle.angularVelocity -= Math.abs(circle.vy) * 0.005;
                     }                    // 灯泡碰撞检测（基于灯泡轮廓的圆形区域）
                     this.circles.forEach(other => {
                         if (other !== circle) {
@@ -671,11 +656,6 @@
                                 circle.vy -= ay;
                                 other.vx += ax;
                                 other.vy += ay;
-
-                                // 碰撞时增加旋转效果
-                                const rotationImpact = (ax + ay) * 0.01;
-                                circle.angularVelocity += rotationImpact;
-                                other.angularVelocity -= rotationImpact;
                             }
                         }
                     });
@@ -685,32 +665,22 @@
 
                     // 如果图片已加载完成，则绘制图片
                     if (img.complete && img.naturalHeight !== 0) {
-                        // 保存当前canvas状态
-                        this.ctx.save();
-
-                        // 移动到灯泡中心
-                        this.ctx.translate(circle.x, circle.y);
-
-                        // 应用旋转
-                        this.ctx.rotate(circle.rotation);
-
                         // 添加发光效果
                         if (circle.filled) {
                             this.ctx.shadowColor = '#ffff00';
                             this.ctx.shadowBlur = 30; // 增强发光效果
                         }
 
-                        // 绘制灯泡图片，以原点为中心
+                        // 绘制灯泡图片，以circle.x, circle.y为中心
                         this.ctx.drawImage(
                             img,
-                            -circle.width / 2,
-                            -circle.height / 2,
+                            circle.x - circle.width / 2,
+                            circle.y - circle.height / 2,
                             circle.width,
                             circle.height
                         );
 
-                        // 恢复canvas状态
-                        this.ctx.restore();
+                        this.ctx.shadowBlur = 0;
                     } else {
                         // 图片未加载完成时，绘制占位圆圈
                         this.ctx.beginPath();
