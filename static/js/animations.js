@@ -82,6 +82,7 @@ export class MoguAnimation {
 
 /**
  * 第三页导航动画控制器
+ * 支持 IntersectionObserver 和 pageChange 事件两种触发方式
  */
 export class NavAnimation {
     constructor(options = {}) {
@@ -98,31 +99,21 @@ export class NavAnimation {
     }
     
     init() {
-        // 初始状态
-        this.navItems.forEach(item => {
-            item.style.opacity = '0';
-            item.style.transform = 'translateX(-100px)';
-            item.style.animation = 'none';
-        });
-        
-        this.setupObserver();
+        // 初始状态 - 由 transition-element 类控制，这里只设置悬停交互
         this.setupHoverInteraction();
+        this.setupPageChangeListener();
     }
     
-    setupObserver() {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    this.startAnimation();
-                } else {
-                    this.resetAnimation();
-                }
-            });
-        }, {
-            threshold: this.threshold
+    setupPageChangeListener() {
+        // 监听页面切换事件（由 page-transition.js 触发）
+        window.addEventListener('pageChange', (e) => {
+            const { sectionClass } = e.detail;
+            if (sectionClass === 'contact-section') {
+                this.startAnimation();
+            } else {
+                this.resetAnimation();
+            }
         });
-        
-        observer.observe(this.section);
     }
     
     setupHoverInteraction() {
@@ -147,16 +138,15 @@ export class NavAnimation {
     
     startAnimation() {
         this.navItems.forEach((item, index) => {
-            item.style.animation = `slideInLeft 0.6s ease forwards`;
-            item.style.animationDelay = `${0.1 * (index + 1)}s`;
+            // 使用 CSS 类配合 transition-element
+            item.style.transitionDelay = `${0.1 * (index + 1)}s`;
+            item.classList.add('nav-animated');
         });
     }
     
     resetAnimation() {
         this.navItems.forEach(item => {
-            item.style.opacity = '0';
-            item.style.transform = 'translateX(-100px)';
-            item.style.animation = 'none';
+            item.classList.remove('nav-animated');
         });
     }
 }
@@ -199,9 +189,21 @@ export function createBuildingWindows() {
 
 /**
  * 平滑滚动导航
+ * 注意：如果使用了 page-transition.js，这些函数会被覆盖
+ * 这里作为备用方案保留
  */
 export const scrollNavigation = {
     toSection(selector) {
+        // 如果 page-transition 可用，使用它
+        if (window.pageTransition) {
+            const sections = Array.from(document.querySelectorAll('.page-section'));
+            const index = sections.findIndex(s => s.matches(selector) || s.classList.contains(selector.replace('.', '')));
+            if (index !== -1) {
+                window.pageTransition.goToPage(index);
+                return;
+            }
+        }
+        // 否则使用原生滚动
         const section = document.querySelector(selector);
         if (section) {
             section.scrollIntoView({ behavior: 'smooth' });
@@ -225,15 +227,34 @@ export const scrollNavigation = {
     },
     
     toTop() {
-        this.toSection('.page-section');
+        if (window.pageTransition) {
+            window.pageTransition.goToPage(0);
+        } else {
+            this.toSection('.page-section');
+        }
     }
 };
 
 // 将滚动函数暴露到全局作用域供HTML使用
+// 注意：page-transition.js 会覆盖这些函数
 if (typeof window !== 'undefined') {
-    window.scrollToAscii = () => scrollNavigation.toAscii();
-    window.scrollToContact = () => scrollNavigation.toContact();
-    window.scrollToCreativity = () => scrollNavigation.toCreativity();
-    window.scrollToView = () => scrollNavigation.toView();
-    window.scrollToTop = () => scrollNavigation.toTop();
+    // 只在 page-transition 未定义时设置
+    const setScrollFunctions = () => {
+        if (!window.pageTransition) {
+            window.scrollToAscii = () => scrollNavigation.toAscii();
+            window.scrollToContact = () => scrollNavigation.toContact();
+            window.scrollToCreativity = () => scrollNavigation.toCreativity();
+            window.scrollToView = () => scrollNavigation.toView();
+            window.scrollToTop = () => scrollNavigation.toTop();
+        }
+    };
+    
+    // 延迟执行，让 page-transition 有机会先加载
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(setScrollFunctions, 100);
+        });
+    } else {
+        setTimeout(setScrollFunctions, 100);
+    }
 }

@@ -1,6 +1,7 @@
 /**
  * 眼球跟踪模块
  * 实现瞳孔跟随鼠标移动的效果
+ * 支持 IntersectionObserver 和 pageChange 事件两种触发方式
  */
 
 export class EyeTracking {
@@ -22,25 +23,21 @@ export class EyeTracking {
     }
     
     init() {
-        this.setupIntersectionObserver();
+        this.setupPageChangeListener();
         this.bindEvents();
     }
     
-    setupIntersectionObserver() {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.target === this.viewSection) {
-                    this.isActive = entry.isIntersecting;
-                    if (!this.isActive) {
-                        this.resetPupilPosition();
-                    }
-                }
-            });
-        }, {
-            threshold: 0.3
+    setupPageChangeListener() {
+        // 监听页面切换事件（由 page-transition.js 触发）
+        window.addEventListener('pageChange', (e) => {
+            const { sectionClass } = e.detail;
+            if (sectionClass === 'view-section') {
+                this.isActive = true;
+            } else {
+                this.isActive = false;
+                this.resetPupilPosition();
+            }
         });
-        
-        observer.observe(this.viewSection);
     }
     
     bindEvents() {

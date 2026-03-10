@@ -8,6 +8,7 @@
     <title>My Page - Creative Portfolio</title>
     <link type="text/css" href="static/css/styles.css" rel="stylesheet" />
     <link rel="stylesheet" href="static/css/index.css" />
+    <link rel="stylesheet" href="static/css/page-transition.css" />
     <style>
         /* 文字间距样式 - 替代&nbsp */
         .text-indent-sm { margin-left: 1em; }
@@ -65,6 +66,35 @@
     <!-- 跳过导航链接 - 可访问性 -->
     <a href="#main-content" class="skip-link">跳到主要内容</a>
     
+    <!-- 全局音乐播放器 - 固定位置，不受页面过渡影响 -->
+    <div class="music-player" role="region" aria-label="音乐播放器"
+        style="position:fixed; top:40px; left:40px; z-index:1000; background:rgba(20,20,20,0.8); border-radius:16px; box-shadow:0 0 10px #14ffeb; padding:18px 24px; display:flex; align-items:center; gap:16px;">
+        <audio id="main-audio" src="static/assets/music.MP3" preload="auto" aria-label="背景音乐"></audio>
+        <button id="volume-btn" aria-label="音量控制 - 点击静音，长按调节音量"
+            style="background:#fff; color:#14ffeb; border:2px solid #14ffeb; border-radius:50%; width:40px; height:40px; font-size:20px; font-weight:bold; cursor:pointer; position:relative;">
+            <span aria-hidden="true">🔊</span>
+            <span id="volume-tip" role="tooltip"
+                style="display:none; position:absolute; left:50%; top:-32px; transform:translateX(-50%); background:rgba(20,20,20,0.95); color:#14ffeb; padding:4px 12px; border-radius:8px; font-size:14px; white-space:nowrap; z-index:100; box-shadow:0 0 8px #14ffeb;">
+                长按调节音量~
+            </span>
+        </button>
+        <div style="position:relative; width:220px; height:24px; margin-left:8px;" role="progressbar" aria-label="音量" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+            <div style="position:absolute; top:12px; left:0; width:200px; height:2px; background:#ccc; border-radius:2px;"></div>
+            <div id="volume-bar"
+                style="position:absolute; top:7px; left:0; height:12px; background:#14ffeb; border-radius:6px; width:20%; transition:width 0.1s;">
+            </div>
+        </div>
+    </div>
+    
+    <!-- 页面指示器 -->
+    <nav class="page-indicators" role="navigation" aria-label="页面导航">
+        <button class="page-indicator active" data-page="0" aria-label="第1页 - 主页" aria-current="true"></button>
+        <button class="page-indicator" data-page="1" aria-label="第2页 - ASCII动画"></button>
+        <button class="page-indicator" data-page="2" aria-label="第3页 - 联系信息"></button>
+        <button class="page-indicator" data-page="3" aria-label="第4页 - 创意展示"></button>
+        <button class="page-indicator" data-page="4" aria-label="第5页 - 视觉"></button>
+    </nav>
+    
     <!-- 第一页：主页面 -->
     <section class="page-section" id="main-content" aria-label="主页">
         <canvas class="bg-glow" id="bgGlow" aria-hidden="true"></canvas>
@@ -86,25 +116,6 @@
                 SCROLL CAREFULLY, IT'S SMOOTH<br>小・心・地・滑
             </div>
             <div class="scroll-indicator" aria-hidden="true"></div>
-
-            <div class="music-player" role="region" aria-label="音乐播放器"
-                style="position:absolute; top:40px; left:40px; z-index:30; background:rgba(20,20,20,0.8); border-radius:16px; box-shadow:0 0 10px #14ffeb; padding:18px 24px; display:flex; align-items:center; gap:16px;">
-                <audio id="main-audio" src="static/assets/music.MP3" preload="auto" aria-label="背景音乐"></audio>
-                <button id="volume-btn" aria-label="音量控制 - 点击静音，长按调节音量"
-                    style="background:#fff; color:#14ffeb; border:2px solid #14ffeb; border-radius:50%; width:40px; height:40px; font-size:20px; font-weight:bold; cursor:pointer; position:relative;">
-                    <span aria-hidden="true">🔊</span>
-                    <span id="volume-tip" role="tooltip"
-                        style="display:none; position:absolute; left:50%; top:-32px; transform:translateX(-50%); background:rgba(20,20,20,0.95); color:#14ffeb; padding:4px 12px; border-radius:8px; font-size:14px; white-space:nowrap; z-index:100; box-shadow:0 0 8px #14ffeb;">
-                        长按调节音量~
-                    </span>
-                </button>
-                <div style="position:relative; width:220px; height:24px; margin-left:8px;" role="progressbar" aria-label="音量" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                    <div style="position:absolute; top:12px; left:0; width:200px; height:2px; background:#ccc; border-radius:2px;"></div>
-                    <div id="volume-bar"
-                        style="position:absolute; top:7px; left:0; height:12px; background:#14ffeb; border-radius:6px; width:20%; transition:width 0.1s;">
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
 
@@ -274,9 +285,40 @@
     <!-- 引入模块化JS -->
     <script type="module" src="static/js/main.js"></script>
     <script src="static/js/music-player.js"></script>
+    <script src="static/js/page-transition.js" type="module"></script>
+    
+    <!-- 页面指示器交互 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const indicators = document.querySelectorAll('.page-indicator');
+            
+            // 点击指示器跳转
+            indicators.forEach(indicator => {
+                indicator.addEventListener('click', function() {
+                    const pageIndex = parseInt(this.dataset.page);
+                    if (window.pageTransition) {
+                        window.pageTransition.goToPage(pageIndex);
+                    }
+                });
+            });
+            
+            // 监听页面切换事件，更新指示器状态
+            window.addEventListener('pageChange', function(e) {
+                const { pageIndex } = e.detail;
+                indicators.forEach((ind, i) => {
+                    if (i === pageIndex) {
+                        ind.classList.add('active');
+                        ind.setAttribute('aria-current', 'true');
+                    } else {
+                        ind.classList.remove('active');
+                        ind.removeAttribute('aria-current');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
-
 
 </html>

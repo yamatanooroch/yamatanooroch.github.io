@@ -18,6 +18,7 @@ const longPressThreshold = 200;
 let longPressTimeout = null;
 let hasStarted = false;
 let currentVolume = defaultVolume;
+let isPressing = false; // 追踪是否从音量按钮开始按下
 
 function setupMusicPlayer() {
     audio = document.getElementById('main-audio');
@@ -78,27 +79,54 @@ function handleTouchStart(e) {
 }
 
 function handlePressStart(e) {
+    isPressing = true; // 标记从音量按钮开始按下
     isLongPress = false;
     throwStart = Date.now();
     
     longPressTimeout = setTimeout(() => {
         isLongPress = true;
-        throwTimer = setInterval(() => {
+        // 重置开始时间，从长按确认时开始计算
+        throwStart = Date.now();
+        // 禁用进度条transition以实现实时更新
+        volumeBar.style.transition = 'none';
+        
+        // 使用 requestAnimationFrame 替代 setInterval，更流畅
+        function updateVolume() {
+            if (!isLongPress) return;
+            
             let t = Date.now() - throwStart;
             t = Math.min(t, maxThrowTime);
             currentVolume = minVolume + (maxVolume - minVolume) * (t / maxThrowTime);
             audio.volume = currentVolume;
             updateVolumeUI(currentVolume);
-        }, 16);
+            updateButtonIcon(false);
+            
+            if (t < maxThrowTime) {
+                throwTimer = requestAnimationFrame(updateVolume);
+            }
+        }
+        throwTimer = requestAnimationFrame(updateVolume);
     }, longPressThreshold);
 }
 
 function handlePressEnd() {
+    // 只有从音量按钮开始按下时才处理
+    if (!isPressing) return;
+    
+    isPressing = false; // 重置标志
     clearTimeout(longPressTimeout);
+    
+    // 取消动画帧
     if (throwTimer) {
-        clearInterval(throwTimer);
+        cancelAnimationFrame(throwTimer);
         throwTimer = null;
     }
+    
+    // 恢复进度条transition
+    if (volumeBar) {
+        volumeBar.style.transition = 'width 0.1s';
+    }
+    
     if (!isLongPress) {
         // 短按切换静音
         if (audio.volume > 0) {

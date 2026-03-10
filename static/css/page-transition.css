@@ -1,0 +1,274 @@
+/**
+ * 页面过渡样式
+ * 实现平滑的页面切换效果
+ */
+
+/* ==================== 基础过渡设置 ==================== */
+
+/* 禁用原生滚动，由JS控制 */
+html, body {
+    overflow: hidden !important;
+    scroll-snap-type: none !important;
+}
+
+/* 页面section基础样式 */
+.page-section {
+    will-change: opacity, transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+/* ==================== 元素过渡效果 ==================== */
+
+/* 可过渡元素 */
+.transition-element {
+    opacity: 0;
+    transform: translateY(30px);
+    will-change: opacity, transform;
+}
+
+/* 激活状态 */
+.transition-element.transition-active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==================== 不同元素的自定义过渡 ==================== */
+
+/* 标题元素 - 从下方滑入 */
+.transition-element h1,
+.transition-element h2,
+.transition-element h3,
+.main-text.transition-element > * {
+    transform: translateY(40px);
+}
+
+.transition-element.transition-active h1,
+.transition-element.transition-active h2,
+.transition-element.transition-active h3,
+.main-text.transition-element.transition-active > * {
+    transform: translateY(0);
+}
+
+/* 图片元素 - 缩放 + 淡入 */
+.transition-element img,
+img.transition-element {
+    transform: scale(0.9) translateY(20px);
+    filter: blur(5px);
+}
+
+.transition-element.transition-active img,
+img.transition-element.transition-active {
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+}
+
+/* 左侧内容 - 从左滑入 */
+.left-content.transition-element,
+.left-nav.transition-element,
+.left-img.transition-element {
+    transform: translateX(-50px);
+}
+
+.left-content.transition-element.transition-active,
+.left-nav.transition-element.transition-active,
+.left-img.transition-element.transition-active {
+    transform: translateX(0);
+}
+
+/* 右侧内容 - 从右滑入 */
+.right-content.transition-element,
+.right-geo.transition-element,
+.buildings-container.transition-element {
+    transform: translateX(50px);
+}
+
+.right-content.transition-element.transition-active,
+.right-geo.transition-element.transition-active,
+.buildings-container.transition-element.transition-active {
+    transform: translateX(0);
+}
+
+/* 中心文字 - 从下方淡入 */
+.center-text.transition-element {
+    transform: translateY(40px);
+}
+
+.center-text.transition-element.transition-active {
+    transform: translateY(0);
+}
+
+/* 导航项 - 依次从左滑入 */
+.nav-item.transition-element {
+    transform: translateX(-80px);
+}
+
+.nav-item.transition-element.transition-active {
+    transform: translateX(0);
+}
+
+/* ASCII容器 - 缩放 + 旋转 */
+.window-frame.transition-element,
+.ascii-container.transition-element {
+    transform: scale(0.95) perspective(1000px) rotateX(5deg);
+}
+
+.window-frame.transition-element.transition-active,
+.ascii-container.transition-element.transition-active {
+    transform: scale(1) perspective(1000px) rotateX(0deg);
+}
+
+/* 眼睛容器 - 缩放淡入 */
+.eye-container.transition-element {
+    transform: scale(0.8);
+}
+
+.eye-container.transition-element.transition-active {
+    transform: scale(1);
+}
+
+/* 滚动文字 - 透明度渐变 */
+.scrolling-text-container.transition-element {
+    opacity: 0;
+    transform: none;
+}
+
+.scrolling-text-container.transition-element.transition-active {
+    opacity: 1;
+}
+
+/* Canvas容器 - 保持正常渲染 */
+.physics-canvas-container.transition-element,
+.bg-glow {
+    opacity: 1;
+    transform: none;
+}
+
+.physics-canvas-container.transition-element.transition-active {
+    opacity: 1;
+}
+
+/* 底部提示 - 从下方弹入 */
+.bottom-tip.transition-element {
+    transform: translateY(50px);
+}
+
+.bottom-tip.transition-element.transition-active {
+    transform: translateY(0) translateX(-50%);
+}
+
+/* ==================== 特殊页面效果 ==================== */
+
+/* 主页面光效保持 */
+.page-section:first-child .bg-glow {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* 音乐播放器始终保持 */
+.music-player {
+    position: fixed !important;
+    z-index: 1000 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+}
+
+/* ==================== 错开延迟动画 ==================== */
+
+/* 导航项错开效果 */
+.nav-item.transition-element:nth-child(1) { transition-delay: 0ms; }
+.nav-item.transition-element:nth-child(2) { transition-delay: 80ms; }
+.nav-item.transition-element:nth-child(3) { transition-delay: 160ms; }
+.nav-item.transition-element:nth-child(4) { transition-delay: 240ms; }
+
+.nav-item.transition-element.transition-active:nth-child(1) { transition-delay: 100ms; }
+.nav-item.transition-element.transition-active:nth-child(2) { transition-delay: 180ms; }
+.nav-item.transition-element.transition-active:nth-child(3) { transition-delay: 260ms; }
+.nav-item.transition-element.transition-active:nth-child(4) { transition-delay: 340ms; }
+
+/* 主文字错开效果 */
+.main-text > *:nth-child(1) { transition-delay: 0ms; }
+.main-text > *:nth-child(2) { transition-delay: 100ms; }
+.main-text > *:nth-child(3) { transition-delay: 200ms; }
+
+/* ==================== 过渡指示器 ==================== */
+
+/* 页面指示器（可选） */
+.page-indicators {
+    position: fixed;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.page-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(20, 255, 235, 0.3);
+    border: 2px solid #14ffeb;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.page-indicator:hover {
+    background: rgba(20, 255, 235, 0.6);
+    transform: scale(1.2);
+}
+
+.page-indicator.active {
+    background: #14ffeb;
+    box-shadow: 0 0 15px rgba(20, 255, 235, 0.8);
+}
+
+/* ==================== 减少动画偏好 ==================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .transition-element {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+    
+    .page-section {
+        transition: opacity 0.1ms !important;
+    }
+}
+
+/* ==================== 移动端优化 ==================== */
+
+@media (max-width: 768px) {
+    /* 简化移动端过渡效果 */
+    .transition-element {
+        transform: translateY(20px);
+    }
+    
+    .left-content.transition-element,
+    .left-nav.transition-element,
+    .right-content.transition-element,
+    .buildings-container.transition-element {
+        transform: translateY(20px);
+    }
+    
+    .left-content.transition-element.transition-active,
+    .left-nav.transition-element.transition-active,
+    .right-content.transition-element.transition-active,
+    .buildings-container.transition-element.transition-active {
+        transform: translateY(0);
+    }
+    
+    /* 页面指示器位置调整 */
+    .page-indicators {
+        right: 15px;
+    }
+    
+    .page-indicator {
+        width: 10px;
+        height: 10px;
+    }
+}
