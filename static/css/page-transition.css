@@ -63,33 +63,38 @@ img.transition-element.transition-active {
     filter: blur(0);
 }
 
+/* 中心内容 - 从下方淡入并放大 */
+.center-nav.transition-element,
+.holographic-panel.transition-element {
+    transform: scale(0.9) translateY(30px);
+}
+
+.center-nav.transition-element.transition-active,
+.holographic-panel.transition-element.transition-active {
+    transform: scale(1) translateY(0);
+}
+
 /* 左侧内容 - 从左滑入 */
 .left-content.transition-element,
-.left-nav.transition-element,
 .left-img.transition-element {
     transform: translateX(-50px);
 }
 
 .left-content.transition-element.transition-active,
-.left-nav.transition-element.transition-active,
 .left-img.transition-element.transition-active {
     transform: translateX(0);
 }
 
 /* 右侧内容 - 从右滑入 */
 .right-content.transition-element,
-.right-geo.transition-element,
-.buildings-container.transition-element {
+.right-geo.transition-element {
     transform: translateX(50px);
 }
 
 .right-content.transition-element.transition-active,
-.right-geo.transition-element.transition-active,
-.buildings-container.transition-element.transition-active {
+.right-geo.transition-element.transition-active {
     transform: translateX(0);
 }
-
-/* 中心文字 - 从下方淡入 */
 .center-text.transition-element {
     transform: translateY(40px);
 }
@@ -98,13 +103,13 @@ img.transition-element.transition-active {
     transform: translateY(0);
 }
 
-/* 导航项 - 依次从左滑入 */
+/* 导航项 - 中心放大淡入 */
 .nav-item.transition-element {
-    transform: translateX(-80px);
+    transform: scale(0.8) translateY(20px);
 }
 
 .nav-item.transition-element.transition-active {
-    transform: translateX(0);
+    transform: scale(1) translateY(0);
 }
 
 /* ASCII容器 - 缩放 + 旋转 */
@@ -139,12 +144,14 @@ img.transition-element.transition-active {
 
 /* Canvas容器 - 保持正常渲染 */
 .physics-canvas-container.transition-element,
+#city3d-container.transition-element,
 .bg-glow {
     opacity: 1;
     transform: none;
 }
 
-.physics-canvas-container.transition-element.transition-active {
+.physics-canvas-container.transition-element.transition-active,
+#city3d-container.transition-element.transition-active {
     opacity: 1;
 }
 
@@ -249,16 +256,14 @@ img.transition-element.transition-active {
     }
     
     .left-content.transition-element,
-    .left-nav.transition-element,
     .right-content.transition-element,
-    .buildings-container.transition-element {
+    .center-nav.transition-element {
         transform: translateY(20px);
     }
     
     .left-content.transition-element.transition-active,
-    .left-nav.transition-element.transition-active,
     .right-content.transition-element.transition-active,
-    .buildings-container.transition-element.transition-active {
+    .center-nav.transition-element.transition-active {
         transform: translateY(0);
     }
     

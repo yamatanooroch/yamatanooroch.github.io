@@ -152,42 +152,6 @@ export class NavAnimation {
 }
 
 /**
- * 建筑物窗户创建器
- */
-export function createBuildingWindows() {
-    const buildings = [
-        { id: 'building1', windows: 12 },
-        { id: 'building2', windows: 20 },
-        { id: 'building3', windows: 30 },
-        { id: 'building4', windows: 16 },
-        { id: 'building5', windows: 10 }
-    ];
-    
-    buildings.forEach(building => {
-        const buildingEl = document.getElementById(building.id);
-        if (!buildingEl) return;
-        
-        for (let i = 0; i < building.windows; i++) {
-            const windowEl = document.createElement('div');
-            windowEl.className = 'window';
-            windowEl.setAttribute('aria-hidden', 'true');
-            
-            if (Math.random() > 0.6) {
-                windowEl.classList.add('lit');
-            }
-            
-            const x = 10 + (i % 4) * 18;
-            const y = 15 + Math.floor(i / 4) * 20;
-            
-            windowEl.style.left = x + 'px';
-            windowEl.style.top = y + 'px';
-            
-            buildingEl.appendChild(windowEl);
-        }
-    });
-}
-
-/**
  * 平滑滚动导航
  * 注意：如果使用了 page-transition.js，这些函数会被覆盖
  * 这里作为备用方案保留

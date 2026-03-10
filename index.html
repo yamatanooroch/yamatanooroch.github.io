@@ -150,15 +150,18 @@
 
     <!-- 第三页：联系页面 -->
     <section class="page-section contact-section" aria-label="联系信息">
-        <div class="contact-container">
-            <nav class="left-nav" aria-label="页面导航">
+        <!-- 3D 城市背景层 -->
+        <div id="city3d-container" aria-hidden="true" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;"></div>
+        
+        <!-- 全息联系信息面板 -->
+        <div class="contact-container holographic-panel" style="position: relative; z-index: 2; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; pointer-events: none;">
+            <nav class="center-nav" aria-label="页面导航" style="pointer-events: auto;">
                 <div class="nav-menu" role="menubar">
-                    <div class="nav-item active" data-target="home" role="menuitem" tabindex="0">
+                    <!-- 改为跳转到 intro.html -->
+                    <div class="nav-item active" role="menuitem" tabindex="0" onclick="window.location.href='intro.html'" onkeydown="if(event.key==='Enter')window.location.href='intro.html'">
                         <span class="chinese">主页</span>HOME
                     </div>
-                    <div class="nav-item" data-target="videos" role="menuitem" tabindex="0">
-                        <span class="chinese">视频</span>VIDEOS
-                    </div>
+                    <!-- 删除了视频按钮 -->
                     <div class="nav-item" data-target="photos" role="menuitem" tabindex="0">
                         <span class="chinese">图片</span>PHOTOS
                     </div>
@@ -174,15 +177,8 @@
                         <div><strong>QQ:</strong> 3583818830</div>
                     </div>
                 </address>
+                <div class="bottom-text" style="position: static; transform: none; margin-top: 40px;">去边界以外寻找导航设计!</div>
             </nav>
-            <div class="buildings-container" aria-hidden="true">
-                <div class="building building-1" id="building1"></div>
-                <div class="building building-2" id="building2"></div>
-                <div class="building building-3" id="building3"></div>
-                <div class="building building-4" id="building4"></div>
-                <div class="building building-5" id="building5"></div>
-                <div class="bottom-text">去边界以外寻找导航设计!</div>
-            </div>
         </div>
         <div class="bottom-tip" onclick="scrollToCreativity()" role="button" tabindex="0"
              onkeydown="if(event.key==='Enter')scrollToCreativity()" aria-label="滚动到创意页面"

@@ -311,7 +311,7 @@ body {
 
 /* 第三页样式 */
 .contact-section {
-    background: linear-gradient(135deg, #f5f5f5, #e8e8e8);
+    background: #050505; /* 改为深色背景以衬托霓虹效果 */
     position: relative;
     overflow: hidden;
 }
@@ -319,45 +319,46 @@ body {
 .contact-container {
     width: 100%;
     height: 100%;
-    display: flex;
     position: relative;
-    z-index: 2;
 }
 
-.left-nav {
-    width: 50%;
-    height: 100%;
+.center-nav {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: flex-start;
-    padding: 0 8%;
-    box-sizing: border-box;
+    align-items: center;
+    padding: 40px 60px;
+    background: rgba(10, 10, 10, 0.6);
+    border: 1px solid rgba(20, 255, 235, 0.3);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 0 40px rgba(20, 255, 235, 0.1), inset 0 0 20px rgba(20, 255, 235, 0.05);
+    transform: translateZ(0); /* 开启GPU加速防止模糊失效 */
 }
 
 .nav-menu {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;
+    align-items: center;
 }
 
 .nav-item {
     font-family: Impact, Arial Black, Arial, sans-serif;
-    font-size: 4rem;
+    font-size: 3.5rem;
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
-    color: #333;
+    color: #666;
     position: relative;
-    opacity: 0;
-    transform: translateX(-100px);
+    text-align: center;
+    text-decoration: none; /* 针对超链接去除下划线 */
 }
 
-@keyframes slideInLeft {
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+/* 移除旧的 slideInLeft 动画，使用居中淡入 */
+.nav-animated {
+    animation: none !important;
 }
 
 .nav-item.active,
@@ -367,12 +368,10 @@ body {
 }
 
 .nav-item .chinese {
-    font-size: 1.2rem;
-    color: #666;
-    margin-right: 20px;
+    font-size: 1rem;
+    color: #444;
+    margin-right: 15px;
     display: inline-block;
-    width: 60px;
-    text-align: right;
 }
 
 .nav-item:hover .chinese,
@@ -381,14 +380,16 @@ body {
 }
 
 .contact-info {
-    margin-top: 80px;
+    margin-top: 40px;
+    text-align: center;
 }
 
 .contact-title {
     font-family: Impact, Arial Black, Arial, sans-serif;
     font-size: 1.5rem;
-    color: #333;
-    margin-bottom: 20px;
+    color: #fff;
+    margin-bottom: 15px;
+    text-shadow: 0 0 10px rgba(20, 255, 235, 0.5);
 }
 
 .contact-details {
@@ -433,75 +434,22 @@ body {
     align-items: flex-end;
     justify-content: center;
     padding-bottom: 50px;
+    overflow: hidden; /* 防止Canvas溢出 */
 }
 
-.building {
-    position: absolute;
-    background: #ccc;
-    border: 2px solid #999;
-}
-
-.building-1 {
-    width: 80px;
-    height: 200px;
-    bottom: 50px;
-    left: 10%;
-    background: linear-gradient(145deg, #ddd, #bbb);
-}
-
-.building-2 {
-    width: 100px;
-    height: 280px;
-    bottom: 50px;
-    left: 25%;
-    background: linear-gradient(145deg, #d5d5d5, #b5b5b5);
-}
-
-.building-3 {
-    width: 120px;
-    height: 350px;
-    bottom: 50px;
-    left: 45%;
-    background: linear-gradient(145deg, #e0e0e0, #c0c0c0);
-}
-
-.building-4 {
-    width: 90px;
-    height: 180px;
-    bottom: 50px;
-    right: 25%;
-    background: linear-gradient(145deg, #dadada, #bababa);
-}
-
-.building-5 {
-    width: 70px;
-    height: 150px;
-    bottom: 50px;
-    right: 10%;
-    background: linear-gradient(145deg, #d8d8d8, #b8b8b8);
-}
-
-.window {
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    background: #fff;
-    border: 1px solid #aaa;
-}
-
-.window.lit {
-    background: #14ffeb;
-    box-shadow: 0 0 8px rgba(20, 255, 235, 0.6);
-}
+/* 移除旧的 building 样式 */
 
 .bottom-text {
     position: absolute;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    color: #666;
+    color: #14ffeb;
     font-size: 1rem;
     text-align: center;
+    z-index: 10;
+    text-shadow: 0 0 10px rgba(20, 255, 235, 0.5);
+    pointer-events: none;
 }
 
 .music-player {

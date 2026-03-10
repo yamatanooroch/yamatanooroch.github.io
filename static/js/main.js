@@ -7,11 +7,11 @@ import { CanvasGlow } from './canvas-glow.js';
 import { PhysicsEngine } from './physics-engine.js';
 import { AsciiAnimation } from './ascii-animation.js';
 import { EyeTracking } from './eye-tracking.js';
+import { City3D } from './city3d.js';
 import { 
     StarRotation, 
     MoguAnimation, 
     NavAnimation, 
-    createBuildingWindows,
     scrollNavigation 
 } from './animations.js';
 
@@ -23,7 +23,8 @@ let app = {
     eyeTracking: null,
     starRotation: null,
     moguAnimation: null,
-    navAnimation: null
+    navAnimation: null,
+    city3D: null
 };
 
 /**
@@ -49,8 +50,8 @@ function initApp() {
     // 初始化导航动画
     app.navAnimation = new NavAnimation();
     
-    // 创建建筑物窗户
-    createBuildingWindows();
+    // 初始化 3D 城市（第三页）
+    app.city3D = new City3D('city3d-container');
     
     // 初始化物理引擎
     const physicsCanvas = document.getElementById('physicsCanvas');
