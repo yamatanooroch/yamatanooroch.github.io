@@ -162,10 +162,10 @@
                         <span class="chinese">主页</span>HOME
                     </div>
                     <!-- 删除了视频按钮 -->
-                    <div class="nav-item" data-target="photos" role="menuitem" tabindex="0">
+                    <div class="nav-item" role="menuitem" tabindex="0" onclick="window.location.href='photos.html'" onkeydown="if(event.key==='Enter')window.location.href='photos.html'">
                         <span class="chinese">图片</span>PHOTOS
                     </div>
-                    <div class="nav-item" data-target="contact" role="menuitem" tabindex="0">
+                    <div class="nav-item" role="menuitem" tabindex="0" onclick="showContactAlert()" onkeydown="if(event.key==='Enter')showContactAlert()">
                         <span class="chinese">联系</span>CONTACT
                     </div>
                 </div>
@@ -177,7 +177,7 @@
                         <div><strong>QQ:</strong> 3583818830</div>
                     </div>
                 </address>
-                <div class="bottom-text" style="position: static; transform: none; margin-top: 40px;">去边界以外寻找导航设计!</div>
+                <div class="bottom-text" style="position: static; transform: none; margin-top: 40px;">去边界以外寻找</div>
             </nav>
         </div>
         <div class="bottom-tip" onclick="scrollToCreativity()" role="button" tabindex="0"
@@ -275,6 +275,15 @@
             <p>You've lit up all the bulbs!</p>
             <p>你好闲！💡</p>
             <button onclick="closeModal()" aria-label="关闭弹窗">Continue</button>
+        </div>
+    </div>
+    
+    <!-- 联系提示弹窗 -->
+    <div id="contactAlertModal" class="modal" role="dialog" aria-labelledby="contact-alert-title" aria-modal="true">
+        <div class="modal-content">
+            <h2 id="contact-alert-title" style="color: #14ffeb; text-shadow: 0 0 20px rgba(0, 255, 225, 0.801);">(￣y▽,￣)╭ </h2>
+            <p>下面已经标了，还不去联系？</p>
+            <button onclick="closeContactAlert()" aria-label="关闭提示">Got it</button>
         </div>
     </div>
     

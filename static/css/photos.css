@@ -1,0 +1,369 @@
+/* 基础重置与赛博朋克背景 */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #050505;
+    color: #14ffeb;
+    font-family: 'Courier New', Courier, monospace;
+    overflow-x: hidden;
+}
+
+/* 动态爱心代码背景 */
+.matrix-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -2;
+    background-color: #050505;
+}
+
+/* 呼吸环境光晕 */
+.ambient-glow {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 80vw;
+    height: 80vh;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(20, 255, 235, 0.05) 0%, transparent 70%);
+    z-index: -1;
+    pointer-events: none;
+    animation: pulse-glow 4s ease-in-out infinite alternate;
+}
+
+@keyframes grid-scroll {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 50px; }
+}
+
+@keyframes pulse-glow {
+    0% { opacity: 0.5; transform: translate(-50%, -50%) scale(0.8); }
+    100% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+/* CRT 扫描线效果 */
+.crt-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 4px, 3px 100%;
+    z-index: 999;
+    pointer-events: none;
+}
+
+/* 返回按钮 */
+.back-btn {
+    position: fixed;
+    top: 30px;
+    left: 40px;
+    background: transparent;
+    border: none;
+    color: #14ffeb;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 100;
+    padding: 10px;
+}
+
+.back-btn:hover {
+    text-shadow: 0 0 10px #14ffeb;
+}
+
+/* 头部样式 */
+.gallery-header {
+    text-align: center;
+    padding: 60px 20px 40px;
+}
+
+.glitch-title {
+    font-family: Impact, Arial Black, sans-serif;
+    font-size: 4rem;
+    margin: 0;
+    position: relative;
+    display: inline-block;
+}
+
+/* 标题故障效果 */
+.glitch-title::before,
+.glitch-title::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #050505;
+}
+.glitch-title::before {
+    left: 2px;
+    text-shadow: -2px 0 #ff00ff;
+    clip-path: inset(24% 0 58% 0);
+    animation: glitch-anim 3s infinite linear alternate-reverse;
+}
+.glitch-title::after {
+    left: -2px;
+    text-shadow: -2px 0 #14ffeb;
+    clip-path: inset(80% 0 5% 0);
+    animation: glitch-anim 2s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+    0% { clip-path: inset(20% 0 80% 0); }
+    20% { clip-path: inset(60% 0 10% 0); }
+    40% { clip-path: inset(40% 0 50% 0); }
+    60% { clip-path: inset(80% 0 5% 0); }
+    80% { clip-path: inset(10% 0 70% 0); }
+    100% { clip-path: inset(30% 0 20% 0); }
+}
+
+/* 瀑布流布局 */
+.gallery-container {
+    column-count: 3;
+    column-gap: 30px; /* 增加间距适配边框 */
+    padding: 0 50px 80px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+@media (max-width: 1024px) { .gallery-container { column-count: 2; } }
+@media (max-width: 600px) { .gallery-container { column-count: 1; padding: 0 20px 40px; } }
+
+/* ==================== 赛博卡片设计 ==================== */
+.gallery-item {
+    break-inside: avoid;
+    margin-bottom: 30px;
+    position: relative;
+    cursor: pointer;
+    background: rgba(10, 10, 10, 0.8); /* 半透明黑底 */
+    padding: 12px; /* 卡片内边距 */
+    border: 2px solid rgba(20, 255, 235, 0.4);
+    box-shadow: 
+        0 0 15px rgba(20, 255, 235, 0.1),
+        inset 0 0 15px rgba(20, 255, 235, 0.1);
+    /* 赛博朋克经典切角边框 */
+    clip-path: polygon(
+        0 15px, 15px 0, 
+        100% 0, 100% calc(100% - 15px), 
+        calc(100% - 15px) 100%, 0 100%
+    );
+    
+    /* 滚动进入的初始隐藏状态 */
+    opacity: 0;
+    transform: translateY(80px) scale(0.9);
+    transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* 滚动可见状态（由JS触发） */
+.gallery-item.reveal-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Hover 卡片浮动与发光加剧 */
+.gallery-item.reveal-visible:hover {
+    border-color: #14ffeb;
+    box-shadow: 
+        0 0 30px rgba(20, 255, 235, 0.5),
+        inset 0 0 20px rgba(20, 255, 235, 0.3);
+    /* 悬停时整体上浮并放大 */
+    transform: translateY(-8px) scale(1.02);
+    z-index: 10;
+}
+
+/* 内部图片包裹层，防止边框受Glitch影响 */
+.item-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    /* 图片内部也做细微切角，匹配外框 */
+    clip-path: polygon(
+        0 8px, 8px 0, 
+        100% 0, 100% calc(100% - 8px), 
+        calc(100% - 8px) 100%, 0 100%
+    );
+}
+
+.item-inner img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: filter 0.3s ease, transform 0.5s ease;
+    filter: grayscale(30%) contrast(110%);
+}
+
+.gallery-item:hover .item-inner img {
+    filter: grayscale(0%) contrast(150%) brightness(1.1);
+    transform: scale(1.05); /* Hover 时图片在内部轻微放大 */
+}
+
+/* 故障艺术 Hover 特效 (作用于 item-inner) */
+.item-inner::before,
+.item-inner::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-image: inherit; /* 由JS动态赋予 */
+    opacity: 0;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    z-index: 2;
+}
+
+.gallery-item:hover .item-inner::before {
+    opacity: 0.8;
+    filter: drop-shadow(4px 0px 0px rgba(255, 0, 255, 1));
+    animation: glitch-img 0.2s cubic-bezier(.25, .46, .45, .94) both infinite;
+}
+
+.gallery-item:hover .item-inner::after {
+    opacity: 0.8;
+    filter: drop-shadow(-4px 0px 0px rgba(20, 255, 235, 1));
+    animation: glitch-img 0.2s cubic-bezier(.25, .46, .45, .94) reverse both infinite;
+}
+
+@keyframes glitch-img {
+    0% { transform: translate(0) }
+    20% { transform: translate(-2px, 2px); clip-path: inset(10% 0 80% 0); }
+    40% { transform: translate(-2px, -2px); clip-path: inset(50% 0 30% 0); }
+    60% { transform: translate(2px, 2px); clip-path: inset(80% 0 5% 0); }
+    80% { transform: translate(2px, -2px); clip-path: inset(20% 0 50% 0); }
+    100% { transform: translate(0); clip-path: inset(0 0 0 0); }
+}
+
+/* 3D Lightbox 模态框 */
+.lightbox-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none; /* 默认不阻挡点击 */
+}
+
+.lightbox-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(5, 5, 5, 0.8);
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.lightbox-content {
+    position: relative;
+    z-index: 1001;
+    perspective: 1500px; /* 为3D翻转提供透视空间 */
+    max-width: 90vw;
+    max-height: 90vh;
+}
+
+.close-btn {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    background: none;
+    border: none;
+    color: #ff00ff;
+    font-size: 2rem;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease, text-shadow 0.3s ease;
+}
+
+.close-btn:hover {
+    text-shadow: 0 0 10px #ff00ff;
+}
+
+.image-wrapper {
+    position: relative;
+    transform-style: preserve-3d;
+    transform: rotateY(90deg) scale(0.5); /* 初始侧翻状态 */
+    opacity: 0;
+}
+
+.image-wrapper img {
+    max-width: 90vw;
+    max-height: 85vh;
+    display: block;
+    border: 2px solid #14ffeb;
+    /* 强烈的霓虹爆发光晕 */
+    box-shadow: 0 0 30px rgba(20, 255, 235, 0.6), 
+                0 0 80px rgba(20, 255, 235, 0.3),
+                inset 0 0 20px rgba(20, 255, 235, 0.5);
+}
+
+/* 模态框激活状态：播放翻转进入动画 */
+.lightbox-modal.active {
+    pointer-events: auto;
+}
+
+.lightbox-modal.active .lightbox-backdrop {
+    opacity: 1;
+}
+
+.lightbox-modal.active .image-wrapper {
+    animation: flipIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.lightbox-modal.active .close-btn {
+    opacity: 1;
+    transition-delay: 0.6s;
+}
+
+/* 模态框关闭状态：播放翻转退出动画 */
+.lightbox-modal.closing .image-wrapper {
+    animation: flipOut 0.6s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards;
+}
+
+.lightbox-modal.closing .lightbox-backdrop {
+    opacity: 0;
+}
+
+.lightbox-modal.closing .close-btn {
+    opacity: 0;
+    transition-delay: 0s;
+}
+
+/* 3D 动画关键帧 */
+@keyframes flipIn {
+    0% {
+        transform: rotateY(-90deg) scale(0.5);
+        opacity: 0;
+        box-shadow: 0 0 0 rgba(20, 255, 235, 0);
+    }
+    100% {
+        transform: rotateY(0deg) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes flipOut {
+    0% {
+        transform: rotateY(0deg) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: rotateY(90deg) scale(0.5);
+        opacity: 0;
+        box-shadow: 0 0 0 rgba(20, 255, 235, 0);
+    }
+}

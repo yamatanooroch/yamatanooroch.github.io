@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Photos - Cyberpunk Gallery</title>
+    <link type="text/css" href="static/css/styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="static/css/photos.css" />
+</head>
+
+<body>
+    <!-- 动态赛博爱心代码背景 -->
+    <canvas id="matrixCanvas" class="matrix-bg"></canvas>
+    <div class="ambient-glow"></div>
+
+    <!-- CRT 扫描线遮罩 -->
+    <div class="crt-overlay"></div>
+
+    <!-- 返回按钮 -->
+    <button class="back-btn" onclick="window.location.href='index.html'" aria-label="返回主页">
+        <span class="glitch-text" data-text="< BACK"><span>&lt; BACK</span></span>
+    </button>
+
+    <header class="gallery-header">
+        <h1 class="glitch-title" data-text="SYSTEM_GALLERY">SYSTEM_GALLERY</h1>
+        <p>VISUAL_ARCHIVE // NO_CROP_MODE_ACTIVATED</p>
+    </header>
+
+    <!-- 瀑布流图片容器 -->
+    <main class="gallery-container" id="galleryContainer">
+        <!-- JS 动态注入图片 -->
+    </main>
+
+    <!-- 3D 大图模态框 -->
+    <div class="lightbox-modal" id="lightboxModal">
+        <div class="lightbox-backdrop" id="lightboxBackdrop"></div>
+        <div class="lightbox-content">
+            <button class="close-btn" id="closeBtn" aria-label="关闭">&times;</button>
+            <div class="image-wrapper" id="imageWrapper">
+                <img src="" alt="大图" id="lightboxImage" />
+            </div>
+        </div>
+    </div>
+
+    <script src="static/js/photos.js"></script>
+</body>
+
+</html>

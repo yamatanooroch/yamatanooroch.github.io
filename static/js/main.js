@@ -91,13 +91,38 @@ function closeModal() {
     }
 }
 
-// 暴露关闭弹窗函数到全局
+/**
+ * 显示联系提示弹窗
+ */
+function showContactAlert() {
+    const modal = document.getElementById('contactAlertModal');
+    if (modal) {
+        modal.style.display = 'block';
+        const closeBtn = modal.querySelector('button');
+        if (closeBtn) closeBtn.focus();
+    }
+}
+
+/**
+ * 关闭联系提示弹窗
+ */
+function closeContactAlert() {
+    const modal = document.getElementById('contactAlertModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+// 暴露函数到全局
 window.closeModal = closeModal;
+window.showContactAlert = showContactAlert;
+window.closeContactAlert = closeContactAlert;
 
 // 键盘支持：ESC关闭弹窗
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         closeModal();
+        closeContactAlert();
     }
 });
 

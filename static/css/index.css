@@ -356,6 +356,33 @@ body {
     text-decoration: none; /* 针对超链接去除下划线 */
 }
 
+/* 添加一个动态流光下划线 */
+.nav-item::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #14ffeb, #fcfcfcb8, #14ffeb, transparent);
+    background-size: 200% 100%;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.4s ease;
+    opacity: 0.8;
+}
+
+.nav-item:hover::after,
+.nav-item.active::after {
+    transform: scaleX(1);
+    animation: neon-flow 1.5s linear infinite;
+}
+
+@keyframes neon-flow {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
 /* 移除旧的 slideInLeft 动画，使用居中淡入 */
 .nav-animated {
     animation: none !important;
@@ -363,8 +390,9 @@ body {
 
 .nav-item.active,
 .nav-item:hover {
-    color: #14ffeb;
-    text-shadow: 0 0 20px rgba(20, 255, 235, 0.5);
+    color: #fff;
+    text-shadow: 0 0 15px #14ffeb, 0 0 30px #00ffff;
+    transform: scale(1.05) translateY(-5px);
 }
 
 .nav-item .chinese {
@@ -372,11 +400,13 @@ body {
     color: #444;
     margin-right: 15px;
     display: inline-block;
+    transition: all 0.3s ease;
 }
 
 .nav-item:hover .chinese,
 .nav-item.active .chinese {
     color: #14ffeb;
+    text-shadow: 0 0 10px #14ffeb;
 }
 
 .contact-info {
