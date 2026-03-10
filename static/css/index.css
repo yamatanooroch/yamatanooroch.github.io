@@ -401,6 +401,22 @@ body {
     margin-bottom: 8px;
 }
 
+.contact-details a {
+    color: #14ffeb;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.contact-details a:hover,
+.contact-details a:focus {
+    text-decoration: underline;
+    text-shadow: 0 0 10px rgba(20, 255, 235, 0.8);
+}
+
+.contact-info {
+    font-style: normal;
+}
+
 .copyright {
     position: absolute;
     bottom: 30px;
@@ -505,6 +521,44 @@ body {
     box-shadow: 0 0 8px #14ffeb;
 }
 
+/* 平板设备 */
+@media (max-width: 1024px) {
+    .center-text {
+        font-size: 3.5vw;
+    }
+    
+    .center-text .creative {
+        font-size: 7vw;
+    }
+    
+    .center-text .and {
+        font-size: 6vw;
+    }
+    
+    .nav-item {
+        font-size: 3.5rem;
+    }
+    
+    .main-text h1 {
+        font-size: 4.5rem;
+    }
+    
+    .main-text h2 {
+        font-size: 3.5rem;
+    }
+    
+    .eye-background {
+        width: 250px;
+        height: 250px;
+    }
+    
+    .eye-pupil {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+/* 手机设备 */
 @media (max-width: 800px) {
     .main-content {
         flex-direction: column;
@@ -512,8 +566,46 @@ body {
         padding-top: 10vh;
     }
 
+    .left-img {
+        margin-right: 0;
+        margin-bottom: 2vh;
+    }
+    
+    #star-img {
+        width: 80px;
+        height: 80px;
+    }
+
     .right-geo {
         display: none;
+    }
+    
+    .center-text {
+        text-align: center;
+        font-size: 3vw;
+    }
+    
+    .center-text span[style*="font-size:7vw"] {
+        font-size: 10vw !important;
+    }
+    
+    .center-text .creative {
+        font-size: 12vw;
+        margin-left: 0;
+    }
+    
+    .center-text .and,
+    .center-text .cool {
+        font-size: 8vw;
+    }
+
+    .contact-btn {
+        top: auto;
+        bottom: 100px;
+        right: 50%;
+        transform: translateX(50%);
+        padding: 10px 24px;
+        font-size: 1rem;
     }
 
     .contact-container {
@@ -525,9 +617,27 @@ body {
         width: 100%;
         height: 50%;
     }
+    
+    .left-nav {
+        padding: 0 5%;
+    }
 
     .nav-item {
-        font-size: 3rem;
+        font-size: 2.5rem;
+    }
+    
+    .nav-item .chinese {
+        font-size: 1rem;
+        width: 50px;
+        margin-right: 10px;
+    }
+    
+    .contact-info {
+        margin-top: 40px;
+    }
+    
+    .contact-title {
+        font-size: 1.2rem;
     }
 
     .creativity-container {
@@ -537,24 +647,159 @@ body {
     .left-content,
     .right-content {
         width: 100%;
-        height: 50%;
+        height: auto;
+        padding: 2vh 5%;
+    }
+    
+    .left-content {
+        order: 1;
+    }
+    
+    .right-content {
+        order: 0;
+        height: 30%;
     }
 
     .main-text h1 {
-        font-size: 4rem;
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
     }
 
     .main-text h2 {
-        font-size: 3.5rem;
+        font-size: 2rem;
+        margin-bottom: 1rem;
     }
 
     .main-text h3 {
-        font-size: 3rem;
+        font-size: 1.5rem;
     }
 
     #mogu-brain {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .physics-canvas-container {
+        height: 25%;
+    }
+    
+    /* ASCII页面 */
+    .ascii-container {
+        padding: 20px;
+    }
+    
+    .window-title {
+        font-size: 18px;
+    }
+    
+    #asciiContainer {
+        font-size: 5px !important;
+    }
+    
+    /* 第五页眼睛 */
+    .eye-background {
+        width: 200px;
+        height: 200px;
+    }
+    
+    .eye-pupil {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .eye-highlight {
+        width: 20px;
+        height: 20px;
+        top: 15px;
+        left: 20px;
+    }
+    
+    .scrolling-text {
+        font-size: 12vw;
+    }
+    
+    .corner {
+        font-size: 1.5rem;
+    }
+    
+    .corner-tl, .corner-tr {
+        top: -60px;
+    }
+    
+    .corner-bl, .corner-br {
+        bottom: -60px;
+    }
+    
+    .corner-tl, .corner-bl {
+        left: -60px;
+    }
+    
+    .corner-tr, .corner-br {
+        right: -60px;
+    }
+    
+    /* 底部提示 */
+    .bottom-tip {
+        font-size: 0.9rem;
+        bottom: 20px;
+    }
+    
+    .scroll-indicator {
+        bottom: 50px;
+        width: 24px;
+        height: 40px;
+    }
+    
+    /* 弹窗 */
+    .modal-content {
+        width: 90%;
+        padding: 30px 20px;
+        margin: 25% auto;
+    }
+    
+    .modal-content h2 {
+        font-size: 1.8rem;
+    }
+    
+    .modal-content p {
+        font-size: 1rem;
+    }
+}
+
+/* 小手机 */
+@media (max-width: 480px) {
+    .center-text span[style*="font-size:7vw"] {
+        font-size: 12vw !important;
+    }
+    
+    .center-text .creative {
+        font-size: 14vw;
+    }
+    
+    .nav-item {
+        font-size: 2rem;
+    }
+    
+    .main-text h1 {
+        font-size: 2rem;
+    }
+    
+    .main-text h2 {
+        font-size: 1.6rem;
+    }
+    
+    .main-text h3 {
+        font-size: 1.2rem;
+    }
+    
+    .eye-background {
         width: 150px;
         height: 150px;
+    }
+    
+    .eye-pupil {
+        width: 60px;
+        height: 60px;
     }
 }
 

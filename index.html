@@ -1,49 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>My Page</title>
+    <meta name="description" content="Creative personal portfolio - Full of creativity, able to imagine" />
+    <title>My Page - Creative Portfolio</title>
     <link type="text/css" href="static/css/styles.css" rel="stylesheet" />
     <link rel="stylesheet" href="static/css/index.css" />
+    <style>
+        /* 文字间距样式 - 替代&nbsp */
+        .text-indent-sm { margin-left: 1em; }
+        .text-indent-md { margin-left: 2em; }
+        .text-indent-lg { margin-left: 3em; }
+        .text-indent-xl { margin-left: 8em; }
+        
+        /* 跳过链接 - 可访问性 */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #14ffeb;
+            color: #000;
+            padding: 8px 16px;
+            z-index: 100;
+            transition: top 0.3s;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+        
+        /* 焦点样式 */
+        *:focus-visible {
+            outline: 2px solid #14ffeb;
+            outline-offset: 2px;
+        }
+        
+        /* 减少动画 - 尊重用户偏好 */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        /* 音乐播放器响应式 */
+        @media (max-width: 600px) {
+            .music-player {
+                top: 10px !important;
+                left: 10px !important;
+                padding: 12px 16px !important;
+                flex-direction: column;
+                gap: 10px !important;
+            }
+            .music-player > div[style*="width:220px"] {
+                width: 150px !important;
+            }
+        }
+    </style>
 </head>
 
 <body>
+    <!-- 跳过导航链接 - 可访问性 -->
+    <a href="#main-content" class="skip-link">跳到主要内容</a>
+    
     <!-- 第一页：主页面 -->
-    <section class="page-section">
-        <canvas class="bg-glow" id="bgGlow"></canvas>
+    <section class="page-section" id="main-content" aria-label="主页">
+        <canvas class="bg-glow" id="bgGlow" aria-hidden="true"></canvas>
         <div class="main-content">
             <div class="left-img">
-                <img src="imerge/star.png" id="star-img" alt="star" />
+                <img src="imerge/star.png" id="star-img" alt="装饰性旋转星星图案" />
             </div>
-            <div class="center-text">
-                <span style="font-size:7vw;">BE SLEEPLY !</span><br>
-                <span class="creative"> &nbsp &nbsp &nbsp CREATIVE!</span><br>
+            <div class="center-text" role="banner">
+                <span style="font-size:7vw;">BE SLEEPY!</span><br>
+                <span class="creative text-indent-md">CREATIVE!</span><br>
                 <span class="and">AND</span> <span class="cool">LAZY!</span>
             </div>
             <div class="right-geo">
-                <img src="imerge/mogu.png" id="mogu-img" alt="mogu" />
+                <img src="imerge/mogu.png" id="mogu-img" alt="互动蘑菇图案 - 鼠标悬停会移动" />
             </div>
-            <button class="contact-btn" onclick="window.location.href='intro.html'">introduction</button>
-            <!-- <button class="view-btn" onclick="scrollToView()" style="position: absolute; bottom: 50px; right: 50px; background: linear-gradient(45deg, #39ff14, #00ff41); color: black; border: none; padding: 10px 20px; border-radius: 25px; font-weight: bold; cursor: pointer; z-index: 20; box-shadow: 0 0 20px rgba(57, 255, 20, 0.6); transition: all 0.3s ease;">VIEW</button> -->
-            <div class="bottom-tip" onclick="scrollToAscii()">SCROLL CAREFULLY, IT'S SMOOTH<br>小・心・地・滑</div>
-            <div class="scroll-indicator"></div>
+            <button class="contact-btn" onclick="window.location.href='intro.html'" aria-label="查看简介">introduction</button>
+            <div class="bottom-tip" onclick="scrollToAscii()" role="button" tabindex="0" 
+                 onkeydown="if(event.key==='Enter')scrollToAscii()" aria-label="滚动到ASCII动画页面">
+                SCROLL CAREFULLY, IT'S SMOOTH<br>小・心・地・滑
+            </div>
+            <div class="scroll-indicator" aria-hidden="true"></div>
 
-            <div class="music-player"
+            <div class="music-player" role="region" aria-label="音乐播放器"
                 style="position:absolute; top:40px; left:40px; z-index:30; background:rgba(20,20,20,0.8); border-radius:16px; box-shadow:0 0 10px #14ffeb; padding:18px 24px; display:flex; align-items:center; gap:16px;">
-                <audio id="main-audio" src="static/assets/music.MP3" preload="auto"></audio>
-                <button id="volume-btn"
-                    style="background:#fff; color:#14ffeb; border:2px solid #14ffeb; border-radius:50%; width:40px; height:40px; font-size:20px; font-weight:bold; cursor:pointer; position:relative;">🔊
-                    <span id="volume-tip"
-                        style="display:none; position:absolute; left:50%; top:-32px; transform:translateX(-50%); background:rgba(20,20,20,0.95); color:#14ffeb; padding:4px 12px; border-radius:8px; font-size:14px; white-space:nowrap; z-index:100; box-shadow:0 0 8px #14ffeb;">长按调节音量~</span>
+                <audio id="main-audio" src="static/assets/music.MP3" preload="auto" aria-label="背景音乐"></audio>
+                <button id="volume-btn" aria-label="音量控制 - 点击静音，长按调节音量"
+                    style="background:#fff; color:#14ffeb; border:2px solid #14ffeb; border-radius:50%; width:40px; height:40px; font-size:20px; font-weight:bold; cursor:pointer; position:relative;">
+                    <span aria-hidden="true">🔊</span>
+                    <span id="volume-tip" role="tooltip"
+                        style="display:none; position:absolute; left:50%; top:-32px; transform:translateX(-50%); background:rgba(20,20,20,0.95); color:#14ffeb; padding:4px 12px; border-radius:8px; font-size:14px; white-space:nowrap; z-index:100; box-shadow:0 0 8px #14ffeb;">
+                        长按调节音量~
+                    </span>
                 </button>
-                <div style="position:relative; width:220px; height:24px; margin-left:8px;">
-                    <div
-                        style="position:absolute; top:12px; left:0; width:200px; height:2px; background:#ccc; border-radius:2px;">
-                    </div>
+                <div style="position:relative; width:220px; height:24px; margin-left:8px;" role="progressbar" aria-label="音量" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                    <div style="position:absolute; top:12px; left:0; width:200px; height:2px; background:#ccc; border-radius:2px;"></div>
                     <div id="volume-bar"
-                        style="position:absolute; top:7px; left:0; height:12px; background:#14ffeb; border-radius:6px; width:10%; transition:width 0.1s;">
+                        style="position:absolute; top:7px; left:0; height:12px; background:#14ffeb; border-radius:6px; width:20%; transition:width 0.1s;">
                     </div>
                 </div>
             </div>
@@ -51,63 +109,62 @@
     </section>
 
     <!-- 第二页：ASCII动画页面 -->
-    <section class="page-section ascii-section">
+    <section class="page-section ascii-section" aria-label="ASCII艺术动画">
         <div class="ascii-container">
-            <div class="window-frame">
+            <div class="window-frame" role="img" aria-label="ASCII字符艺术动画窗口">
                 <div class="window-header">
-                    <div class="window-controls">
+                    <div class="window-controls" aria-hidden="true">
                         <div class="window-control"></div>
                         <div class="window-control"></div>
                         <div class="window-control"></div>
                     </div>
                     <div class="window-title">ASCII ANIMATION</div>
-                    <div class="window-buttons">
+                    <div class="window-buttons" aria-hidden="true">
                         <div class="window-btn btn-minimize"></div>
                         <div class="window-btn btn-restore"></div>
                         <div class="window-btn btn-close"></div>
                     </div>
                 </div>
                 <div class="ascii-display">
-                    <pre id="asciiContainer"></pre>
+                    <pre id="asciiContainer" aria-live="polite"></pre>
                 </div>
             </div>
         </div>
-        <div class="bottom-tip" onclick="scrollToContact()"
-            style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 20;">NEXT
-            PAGE<br>下一页</div>
+        <div class="bottom-tip" onclick="scrollToContact()" role="button" tabindex="0"
+             onkeydown="if(event.key==='Enter')scrollToContact()" aria-label="滚动到联系页面"
+            style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 20;">
+            NEXT PAGE<br>下一页
+        </div>
     </section>
 
     <!-- 第三页：联系页面 -->
-    <section class="page-section contact-section">
+    <section class="page-section contact-section" aria-label="联系信息">
         <div class="contact-container">
-            <div class="left-nav">
-                <div class="nav-menu">
-                    <div class="nav-item active" data-target="home">
+            <nav class="left-nav" aria-label="页面导航">
+                <div class="nav-menu" role="menubar">
+                    <div class="nav-item active" data-target="home" role="menuitem" tabindex="0">
                         <span class="chinese">主页</span>HOME
                     </div>
-                    <div class="nav-item" data-target="videos">
+                    <div class="nav-item" data-target="videos" role="menuitem" tabindex="0">
                         <span class="chinese">视频</span>VIDEOS
                     </div>
-                    <div class="nav-item" data-target="photos">
+                    <div class="nav-item" data-target="photos" role="menuitem" tabindex="0">
                         <span class="chinese">图片</span>PHOTOS
                     </div>
-                    <div class="nav-item" data-target="contact">
+                    <div class="nav-item" data-target="contact" role="menuitem" tabindex="0">
                         <span class="chinese">联系</span>CONTACT
                     </div>
                 </div>
-                <div class="contact-info">
+                <address class="contact-info">
                     <div class="contact-title">GET IN TOUCH ///</div>
                     <div class="contact-details">
-                        <div><strong>Email:</strong> 3583818830@qq.com</div>
-                        <div><strong>Github:</strong> yamatanooroch</div>
+                        <div><strong>Email:</strong> <a href="mailto:3583818830@qq.com">3583818830@qq.com</a></div>
+                        <div><strong>Github:</strong> <a href="https://github.com/yamatanooroch" target="_blank" rel="noopener">yamatanooroch</a></div>
                         <div><strong>QQ:</strong> 3583818830</div>
                     </div>
-                </div>
-                <!-- <div class="copyright">
-                    蜀ICP备20220223号-2
-                </div> -->
-            </div>
-            <div class="buildings-container">
+                </address>
+            </nav>
+            <div class="buildings-container" aria-hidden="true">
                 <div class="building building-1" id="building1"></div>
                 <div class="building building-2" id="building2"></div>
                 <div class="building building-3" id="building3"></div>
@@ -116,38 +173,40 @@
                 <div class="bottom-text">去边界以外寻找导航设计!</div>
             </div>
         </div>
-        <div class="bottom-tip" onclick="scrollToCreativity()"
-            style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 20;">NEXT
-            PAGE<br>下一页</div>
+        <div class="bottom-tip" onclick="scrollToCreativity()" role="button" tabindex="0"
+             onkeydown="if(event.key==='Enter')scrollToCreativity()" aria-label="滚动到创意页面"
+            style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 20;">
+            NEXT PAGE<br>下一页
+        </div>
     </section>
 
     <!-- 第四页：创意页面 -->
-    <section class="page-section creativity-section">
+    <section class="page-section creativity-section" aria-label="创意展示">
         <div class="creativity-container">
             <div class="left-content">
                 <div class="main-text">
                     <h1>FULL OF CREATIVITY</h1>
                     <h2>ABLE TO <span class="highlight">IMAGINE</span></h2>
-                    <h3><span class="outline">&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-                            &nbsp&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
-                            &nbsp &nbsp &nbsp CLICK</span> THESE BULBS</h3>
+                    <h3><span class="outline text-indent-xl">CLICK</span> THESE BULBS</h3>
                 </div>
             </div>
             <div class="right-content">
-                <img src="imerge/mogu.png" id="mogu-brain" alt="mogu brain" />
+                <img src="imerge/mogu.png" id="mogu-brain" alt="创意蘑菇 - 代表想象力" />
             </div>
             <div class="physics-canvas-container">
-                <canvas id="physicsCanvas"></canvas>
+                <canvas id="physicsCanvas" aria-label="互动灯泡游戏 - 点击灯泡点亮它们，按空格键点亮最近的灯泡"></canvas>
             </div>
         </div>
-        <div class="bottom-tip" onclick="scrollToView()"
-            style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 20;">NEXT
-            PAGE<br>下一页</div>
+        <div class="bottom-tip" onclick="scrollToView()" role="button" tabindex="0"
+             onkeydown="if(event.key==='Enter')scrollToView()" aria-label="滚动到视觉页面"
+            style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 20;">
+            NEXT PAGE<br>下一页
+        </div>
     </section>
 
     <!-- 第五页：视觉页面 -->
-    <section class="page-section view-section">
-        <div class="scrolling-text-container">
+    <section class="page-section view-section" aria-label="视觉至上">
+        <div class="scrolling-text-container" aria-hidden="true">
             <!-- 奇数行向左滚动 -->
             <div class="text-row odd-row">
                 <div class="scrolling-text left">VIEW FIRST VISUAL FIRST VIEW FIRST VISUAL FIRST VIEW FIRST VISUAL FIRST
@@ -175,19 +234,19 @@
             </div>
         </div>
 
-        <div class="eye-container">
+        <div class="eye-container" role="img" aria-label="跟随鼠标移动的眼睛动画">
             <div class="eye-background">
                 <div class="eye-pupil">
                     <div class="eye-highlight"></div>
                 </div>
-                <div class="eye-lines">
+                <div class="eye-lines" aria-hidden="true">
                     <div class="line line-1"></div>
                     <div class="line line-2"></div>
                     <div class="line line-3"></div>
                     <div class="line line-4"></div>
                 </div>
             </div>
-            <div class="corner-markers">
+            <div class="corner-markers" aria-hidden="true">
                 <div class="corner corner-tl">视</div>
                 <div class="corner corner-tr">觉</div>
                 <div class="corner corner-bl">至</div>
@@ -195,643 +254,29 @@
             </div>
         </div>
 
-        <div class="bottom-tip" onclick="scrollToTop()"
-            style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 20;">BACK TO
-            TOP<br>返回顶部</div>
+        <div class="bottom-tip" onclick="scrollToTop()" role="button" tabindex="0"
+             onkeydown="if(event.key==='Enter')scrollToTop()" aria-label="返回页面顶部"
+            style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 20;">
+            BACK TO TOP<br>返回顶部
+        </div>
     </section>
 
-    <!-- 恭喜页面 -->
-    <div id="congratulationModal" class="modal">
+    <!-- 恭喜弹窗 -->
+    <div id="congratulationModal" class="modal" role="dialog" aria-labelledby="modal-title" aria-modal="true">
         <div class="modal-content">
-            <h2> CONGRATULATIONS! </h2>
+            <h2 id="modal-title">🎉 CONGRATULATIONS! 🎉</h2>
             <p>You've lit up all the bulbs!</p>
             <p>你好闲！💡</p>
-            <button onclick="closeModal()">Continue</button>
+            <button onclick="closeModal()" aria-label="关闭弹窗">Continue</button>
         </div>
     </div>
-    <script>
-        // 鼠标跟随绿色光斑
-        const canvas = document.getElementById('bgGlow');
-        const ctx = canvas.getContext('2d');
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
-        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
-        document.addEventListener('mousemove', e => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
-        function drawGlow() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            // 主光斑
-            let grad1 = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 350);
-            grad1.addColorStop(0, 'rgba(20,255,235,0.45)');
-            grad1.addColorStop(1, 'rgba(20,255,235,0)');
-            ctx.globalCompositeOperation = 'lighter';
-            ctx.fillStyle = grad1;
-            ctx.fillRect(mouseX - 350, mouseY - 350, 700, 700);
-            // 边缘光斑
-            let grad2 = ctx.createRadialGradient(canvas.width - mouseX, canvas.height - mouseY, 0, canvas.width - mouseX, canvas.height - mouseY, 300);
-            grad2.addColorStop(0, 'rgba(20,255,235,0.25)');
-            grad2.addColorStop(1, 'rgba(20,255,235,0)');
-            ctx.fillStyle = grad2;
-            ctx.fillRect(canvas.width - mouseX - 300, canvas.height - mouseY - 300, 600, 600);
-            ctx.globalCompositeOperation = 'source-over';
-        }
-        setInterval(drawGlow, 16);
-
-        // star.png旋转动画
-        const starImg = document.getElementById('star-img');
-        let starAngle = 0;
-        function rotateStar() {
-            starAngle += 1.2;
-            starImg.style.transform = `rotate(${starAngle}deg)`;
-            requestAnimationFrame(rotateStar);
-        }
-
-        rotateStar();
-
-        // mogu图片随机移动动画
-        const moguImg = document.getElementById('mogu-img');
-        let isAnimating = false;
-
-        moguImg.addEventListener('mouseenter', function (e) {
-            if (isAnimating) return;
-
-            isAnimating = true;
-            const mouseX = e.clientX;
-            const mouseY = e.clientY;
-
-            // 生成随机角度和100px距离
-            const angle = Math.random() * 2 * Math.PI;
-            const distance = 100;
-
-            // 计算新位置
-            const newX = mouseX + Math.cos(angle) * distance;
-            const newY = mouseY + Math.sin(angle) * distance;
-
-            // 获取图片当前位置
-            const rect = moguImg.getBoundingClientRect();
-            const currentX = rect.left + rect.width / 2;
-            const currentY = rect.top + rect.height / 2;
-
-            // 计算移动距离
-            const moveX = newX - currentX;
-            const moveY = newY - currentY;
-
-            // 应用变换
-            moguImg.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.1)`;
-            moguImg.style.filter = 'brightness(1.2) drop-shadow(0 0 20px rgba(20, 255, 235, 0.8))';
-
-            // 1秒后恢复原位
-            setTimeout(() => {
-                moguImg.style.transform = 'translate(0, 0) scale(1)';
-                moguImg.style.filter = 'brightness(1) drop-shadow(0 0 15px rgba(20, 255, 235, 0.3))';
-                isAnimating = false;
-            }, 1000);
-        });
-
-        // 滚动功能
-        function scrollToAscii() {
-            document.querySelector('.ascii-section').scrollIntoView({
-                behavior: 'smooth'
-            });
-        }
-
-        function scrollToContact() {
-            document.querySelector('.contact-section').scrollIntoView({
-                behavior: 'smooth'
-            });
-        }
-
-        function scrollToCreativity() {
-            document.querySelector('.creativity-section').scrollIntoView({
-                behavior: 'smooth'
-            });
-        }
-
-        function scrollToTop() {
-            document.querySelector('.page-section').scrollIntoView({
-                behavior: 'smooth'
-            });
-        }
-
-        // 滚动到第五页的函数
-        function scrollToView() {
-            document.querySelector('.view-section').scrollIntoView({
-                behavior: 'smooth'
-            });
-        }
-
-        // 眼睛跟踪鼠标效果
-        function initEyeTracking() {
-            const eyePupil = document.querySelector('.eye-pupil');
-            const eyeBackground = document.querySelector('.eye-background');
-            const viewSection = document.querySelector('.view-section');
-
-            if (!eyePupil || !eyeBackground || !viewSection) return;
-
-            let isEyeTrackingActive = false;
-
-            // 使用Intersection Observer检测第五页是否可见
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.target === viewSection) {
-                        isEyeTrackingActive = entry.isIntersecting;
-                        if (!isEyeTrackingActive) {
-                            // 当离开第五页时，重置瞳孔位置
-                            eyePupil.style.transform = 'translate(0px, 0px)';
-                        }
-                    }
-                });
-            }, {
-                threshold: 0.3 // 当30%可见时激活
-            });
-
-            observer.observe(viewSection);
-
-            document.addEventListener('mousemove', function (e) {
-                if (!isEyeTrackingActive) return;
-
-                // 获取眼球中心位置
-                const eyeRect = eyeBackground.getBoundingClientRect();
-                const eyeCenterX = eyeRect.left + eyeRect.width / 2;
-                const eyeCenterY = eyeRect.top + eyeRect.height / 2;
-
-                // 计算鼠标相对于眼球中心的位置
-                const mouseX = e.clientX - eyeCenterX;
-                const mouseY = e.clientY - eyeCenterY;
-
-                // 计算距离和角度
-                const distance = Math.sqrt(mouseX * mouseX + mouseY * mouseY);
-                const angle = Math.atan2(mouseY, mouseX);
-
-                // 限制瞳孔移动范围（眼球半径的30%）
-                const maxDistance = 45; // 眼球半径150px的30%
-                const limitedDistance = Math.min(distance * 0.3, maxDistance);
-
-                // 计算瞳孔新位置
-                const pupilX = Math.cos(angle) * limitedDistance;
-                const pupilY = Math.sin(angle) * limitedDistance;
-
-                // 应用变换
-                eyePupil.style.transform = `translate(${pupilX}px, ${pupilY}px)`;
-
-                // 让高光也跟着移动，但移动幅度更小
-                const eyeHighlight = eyePupil.querySelector('.eye-highlight');
-                if (eyeHighlight) {
-                    const highlightX = pupilX * 0.3;
-                    const highlightY = pupilY * 0.3;
-                    eyeHighlight.style.transform = `translate(${highlightX}px, ${highlightY}px)`;
-                }
-            });
-        }
-
-        // 第三页导航交互
-        document.addEventListener('DOMContentLoaded', function () {
-            const navItems = document.querySelectorAll('.nav-item');
-
-            navItems.forEach(item => {
-                item.addEventListener('mouseenter', function () {
-                    // 移除所有active类
-                    navItems.forEach(nav => nav.classList.remove('active'));
-                    // 添加active类到当前项
-                    this.classList.add('active');
-                });
-            });
-
-            // 创建建筑物窗户
-            createBuildingWindows();
-
-            // 设置第三页滑动动画观察器
-            setupThirdPageAnimation();
-
-            // 初始化物理引擎
-            initPhysicsEngine();
-
-            // 初始化眼睛跟踪效果
-            initEyeTracking();
-        });
-
-        // 设置第三页动画观察器
-        function setupThirdPageAnimation() {
-            const contactSection = document.querySelector('.contact-section');
-            const navItems = document.querySelectorAll('.nav-item');
-
-            // 初始状态：移除所有动画，隐藏导航项
-            navItems.forEach(item => {
-                item.style.opacity = '0';
-                item.style.transform = 'translateX(-100px)';
-                item.style.animation = 'none';
-            });
-
-            // 创建观察器
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        // 页面进入视窗，启动动画
-                        startNavAnimation();
-                    } else {
-                        // 页面离开视窗，重置动画
-                        resetNavAnimation();
-                    }
-                });
-            }, {
-                threshold: 0.3 // 当30%的页面可见时触发
-            });
-
-            observer.observe(contactSection);
-        }
-
-        // 启动导航动画
-        function startNavAnimation() {
-            const navItems = document.querySelectorAll('.nav-item');
-
-            navItems.forEach((item, index) => {
-                // 重新应用动画
-                item.style.animation = `slideInLeft 0.6s ease forwards`;
-                item.style.animationDelay = `${0.1 * (index + 1)}s`;
-            });
-        }
-
-        // 重置导航动画
-        function resetNavAnimation() {
-            const navItems = document.querySelectorAll('.nav-item');
-
-            navItems.forEach(item => {
-                item.style.opacity = '0';
-                item.style.transform = 'translateX(-100px)';
-                item.style.animation = 'none';
-            });
-        }
-
-        // 创建建筑物窗户
-        function createBuildingWindows() {
-            const buildings = [
-                { id: 'building1', windows: 12 },
-                { id: 'building2', windows: 20 },
-                { id: 'building3', windows: 30 },
-                { id: 'building4', windows: 16 },
-                { id: 'building5', windows: 10 }
-            ];
-
-            buildings.forEach(building => {
-                const buildingEl = document.getElementById(building.id);
-                if (!buildingEl) return;
-
-                for (let i = 0; i < building.windows; i++) {
-                    const window = document.createElement('div');
-                    window.className = 'window';
-
-                    // 随机决定是否点亮窗户
-                    if (Math.random() > 0.6) {
-                        window.classList.add('lit');
-                    }
-
-                    // 随机位置
-                    const x = 10 + (i % 4) * 18;
-                    const y = 15 + Math.floor(i / 4) * 20;
-
-                    window.style.left = x + 'px';
-                    window.style.top = y + 'px';
-
-                    buildingEl.appendChild(window);
-                }
-            });
-        }
-
-        // 第四页物理引擎
-        class PhysicsEngine {
-            constructor(canvas) {
-                this.canvas = canvas;
-                this.ctx = canvas.getContext('2d');
-                this.circles = [];
-                this.gravity = 0.3;
-                this.friction = 0.98;
-                this.bounceDamping = 0.8;
-                this.scrollForce = 0;
-                this.totalCircles = 8; // 减少数量，因为灯泡变大了
-                this.filledCircles = 0;
-
-                // 预加载灯泡图片
-                this.lightOffImg = new Image();
-                this.lightOnImg = new Image();
-                this.lightOffImg.src = 'imerge/lightoff.png';
-                this.lightOnImg.src = 'imerge/lighton.png';
-
-                // 灯泡的实际大小和碰撞区域（基于灯泡轮廓）- 放大3倍
-                this.bulbWidth = 120;  // 40 * 3
-                this.bulbHeight = 180; // 60 * 3
-                this.bulbCollisionRadius = 60; // 20 * 3 - 灯泡主体的碰撞半径
-
-                this.resizeCanvas();
-                this.initCircles();
-                this.animate();
-
-                window.addEventListener('resize', () => this.resizeCanvas());
-                canvas.addEventListener('click', (e) => this.handleClick(e));
-
-                // 监听滚动
-                let lastScrollY = window.scrollY;
-                window.addEventListener('scroll', () => {
-                    const currentScrollY = window.scrollY;
-                    const scrollDelta = currentScrollY - lastScrollY;
-                    this.scrollForce = scrollDelta * 0.1;
-                    lastScrollY = currentScrollY;
-                });
-            }
-
-            resizeCanvas() {
-                this.canvas.width = this.canvas.offsetWidth;
-                this.canvas.height = this.canvas.offsetHeight;
-            }
-
-            initCircles() {
-                this.circles = [];
-                for (let i = 0; i < this.totalCircles; i++) {
-                    this.circles.push({
-                        x: Math.random() * this.canvas.width,
-                        y: Math.random() * this.canvas.height,
-                        vx: (Math.random() - 0.5) * 4,
-                        vy: (Math.random() - 0.5) * 4,
-                        radius: this.bulbCollisionRadius, // 使用灯泡碰撞半径
-                        filled: false, // false表示灯灭，true表示灯亮
-                        color: '#14ffeb',
-                        width: this.bulbWidth,
-                        height: this.bulbHeight,
-                        tilt: 0, // 倾斜角度（弧度）
-                        tiltVelocity: 0 // 倾斜速度
-                    });
-                }
-            }
-
-            handleClick(e) {
-                const rect = this.canvas.getBoundingClientRect();
-                const clickX = e.clientX - rect.left;
-                const clickY = e.clientY - rect.top;
-
-                this.circles.forEach(circle => {
-                    // 检查点击是否在灯泡的碰撞区域内（椭圆形区域）
-                    const dx = clickX - circle.x;
-                    const dy = clickY - circle.y;
-
-                    // 使用椭圆碰撞检测，灯泡主体区域
-                    const normalizedX = dx / (circle.width * 0.4); // 宽度的40%作为碰撞区域
-                    const normalizedY = dy / (circle.height * 0.5); // 高度的50%作为碰撞区域
-                    const distance = Math.sqrt(normalizedX * normalizedX + normalizedY * normalizedY);
-
-                    if (distance <= 1 && !circle.filled) {
-                        circle.filled = true;
-                        this.filledCircles++;
-
-                        // 添加点击效果
-                        circle.vx += (Math.random() - 0.5) * 5;
-                        circle.vy -= Math.random() * 3 + 2;
-
-                        // 添加倾斜效果
-                        circle.tilt += (Math.random() - 0.5) * 0.3;
-
-                        if (this.filledCircles === this.totalCircles) {
-                            setTimeout(() => this.showCongratulations(), 500);
-                        }
-                    }
-                });
-            }
-
-            showCongratulations() {
-                document.getElementById('congratulationModal').style.display = 'block';
-            }
-
-            animate() {
-                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-                this.circles.forEach(circle => {
-                    // 应用重力
-                    circle.vy += this.gravity;
-
-                    // 应用滚动力
-                    circle.vy += this.scrollForce;
-
-                    // 应用摩擦力
-                    circle.vx *= this.friction;
-                    circle.vy *= this.friction;
-
-                    // 更新位置
-                    circle.x += circle.vx;
-                    circle.y += circle.vy;
-
-                    // 根据水平速度更新倾斜角度
-                    const targetTilt = circle.vx * 0.08; // 提高敏感度：水平速度影响倾斜
-                    const maxTilt = Math.PI / 4; // 最大倾斜45度
-                    circle.tilt += (Math.max(-maxTilt, Math.min(maxTilt, targetTilt)) - circle.tilt) * 0.2; // 更快趋近目标倾斜
-
-                    // 取消回正：不再使用阻尼强制返回竖直
-                    // circle.tilt *= 0.95; (已移除)
-
-                    // 边界碰撞（考虑灯泡图片的实际尺寸）
-                    const halfWidth = circle.width / 2;
-                    const halfHeight = circle.height / 2;
-
-                    if (circle.x < halfWidth) {
-                        circle.x = halfWidth;
-                        circle.vx *= -this.bounceDamping;
-                        circle.tilt += Math.abs(circle.vx) * 0.01; // 边界碰撞产生倾斜
-                    }
-                    if (circle.x > this.canvas.width - halfWidth) {
-                        circle.x = this.canvas.width - halfWidth;
-                        circle.vx *= -this.bounceDamping;
-                        circle.tilt -= Math.abs(circle.vx) * 0.01;
-                    }
-                    if (circle.y < halfHeight) {
-                        circle.y = halfHeight;
-                        circle.vy *= -this.bounceDamping;
-                    }
-                    if (circle.y > this.canvas.height - halfHeight) {
-                        circle.y = this.canvas.height - halfHeight;
-                        circle.vy *= -this.bounceDamping;
-                    }                    // 灯泡碰撞检测（基于灯泡轮廓的圆形区域）
-                    this.circles.forEach(other => {
-                        if (other !== circle) {
-                            const dx = other.x - circle.x;
-                            const dy = other.y - circle.y;
-                            const distance = Math.sqrt(dx * dx + dy * dy);
-                            const minDistance = circle.radius + other.radius;
-
-                            if (distance < minDistance) {
-                                const angle = Math.atan2(dy, dx);
-                                const targetX = circle.x + Math.cos(angle) * minDistance;
-                                const targetY = circle.y + Math.sin(angle) * minDistance;
-                                const ax = (targetX - other.x) * 0.1;
-                                const ay = (targetY - other.y) * 0.1;
-
-                                circle.vx -= ax;
-                                circle.vy -= ay;
-                                other.vx += ax;
-                                other.vy += ay;
-
-                                // 碰撞时产生倾斜效果
-                                const impactTilt = ax * 0.02;
-                                circle.tilt += impactTilt;
-                                other.tilt -= impactTilt;
-                            }
-                        }
-                    });
-
-                    // 绘制灯泡图片
-                    const img = circle.filled ? this.lightOnImg : this.lightOffImg;
-
-                    // 如果图片已加载完成，则绘制图片
-                    if (img.complete && img.naturalHeight !== 0) {
-                        // 保存当前canvas状态
-                        this.ctx.save();
-
-                        // 移动到灯泡中心
-                        this.ctx.translate(circle.x, circle.y);
-
-                        // 应用倾斜角度
-                        this.ctx.rotate(circle.tilt);
-
-                        // 添加发光效果
-                        if (circle.filled) {
-                            this.ctx.shadowColor = '#ffff00';
-                            this.ctx.shadowBlur = 30; // 增强发光效果
-                        }
-
-                        // 绘制灯泡图片，以原点为中心
-                        this.ctx.drawImage(
-                            img,
-                            -circle.width / 2,
-                            -circle.height / 2,
-                            circle.width,
-                            circle.height
-                        );
-
-                        // 恢复canvas状态
-                        this.ctx.restore();
-                    } else {
-                        // 图片未加载完成时，绘制占位圆圈
-                        this.ctx.beginPath();
-                        this.ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
-
-                        if (circle.filled) {
-                            this.ctx.fillStyle = '#ffff00';
-                            this.ctx.fill();
-                            this.ctx.shadowColor = '#ffff00';
-                            this.ctx.shadowBlur = 15;
-                        } else {
-                            this.ctx.strokeStyle = circle.color;
-                            this.ctx.lineWidth = 3;
-                            this.ctx.stroke();
-                        }
-
-                        this.ctx.shadowBlur = 0;
-                    }
-                });
-
-                // 减少滚动力
-                this.scrollForce *= 0.9;
-
-                requestAnimationFrame(() => this.animate());
-            }
-        }
-
-        // 恭喜弹窗功能
-        function closeModal() {
-            document.getElementById('congratulationModal').style.display = 'none';
-        }
-
-        // 初始化物理引擎
-        let physicsEngine;
-        function initPhysicsEngine() {
-            const canvas = document.getElementById('physicsCanvas');
-            if (canvas) {
-                physicsEngine = new PhysicsEngine(canvas);
-            }
-        }
-
-    </script>
-
-
-    <script type="module">
-
-
-
-
-
-
-        import { parseGIF, decompressFrames } from 'https://cdn.jsdelivr.net/npm/gifuct-js@2.1.2/+esm';
-
-        // 获取ASCII显示容器
-        const asciiContainer = document.getElementById('asciiContainer');
-        asciiContainer.style.color = '#14ffeb';
-        asciiContainer.style.fontFamily = 'monospace';
-        asciiContainer.style.fontSize = '8px';
-        asciiContainer.style.lineHeight = '1.0';
-        asciiContainer.style.margin = '0';
-        asciiContainer.style.padding = '0';
-        asciiContainer.style.textAlign = 'center';
-        asciiContainer.style.width = '100%';
-        asciiContainer.style.height = '100%';
-        asciiContainer.style.display = 'flex';
-        asciiContainer.style.alignItems = 'center';
-        asciiContainer.style.justifyContent = 'center';
-        asciiContainer.style.whiteSpace = 'pre';
-        asciiContainer.style.overflow = 'hidden';
-
-        const scale_nums = 2; // 控制ASCII分辨率，数值越小分辨率越高
-        let texts = [];
-        let current_text_index = 0;
-
-        function create_texts(data, width, height) {
-            let text = "";
-            const levels = [["@", "#", "S", "%", "?", "*", "+", ";", ":", ",", ".", " "], ["0", "1"], [".", "*"], [" "]];
-            for (let y = 0; y < height; y += scale_nums) {
-                let row = "";
-                for (let x = 0; x < width; x += scale_nums) {
-                    const i = (y * width + x) * 4;
-                    const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
-                    const level = levels[0][Math.floor(avg / 255 * (levels[0].length - 1))];
-                    row += level;
-                }
-                text += row + "\n";
-            }
-            return text;
-        }
-
-        const ascllbox = {
-            init() {
-                fetch('imerge/head.gif')
-                    .then(response => response.arrayBuffer())
-                    .then(buffer => {
-                        const gif = parseGIF(buffer);
-                        const frames = decompressFrames(gif, true);
-                        texts = frames.map(frame => {
-                            // 创建canvas获取像素数据
-                            const canvas = document.createElement('canvas');
-                            canvas.width = frame.dims.width;
-                            canvas.height = frame.dims.height;
-                            const ctx = canvas.getContext('2d');
-                            const imageData = new ImageData(frame.patch, frame.dims.width, frame.dims.height);
-                            ctx.putImageData(imageData, 0, 0);
-                            const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-                            return create_texts(data, canvas.width, canvas.height);
-                        });
-                        // 定时切换显示
-                        setInterval(() => {
-                            current_text_index = (current_text_index + 1) % texts.length;
-                            asciiContainer.innerText = texts[current_text_index];
-                        }, 80);
-                    })
-                    .catch(error => console.error('Error loading GIF:', error));
-            }
-        };
-        ascllbox.init();
-
-    </script>
+    
+    <!-- 引入模块化JS -->
+    <script type="module" src="static/js/main.js"></script>
     <script src="static/js/music-player.js"></script>
 </body>
+
+</html>
+
 
 </html>

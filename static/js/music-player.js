@@ -1,31 +1,40 @@
-// 音乐播放与音量调节逻辑
+/**
+ * 音乐播放器模块
+ * 支持点击静音、长按调节音量、键盘控制
+ */
+
 let audio;
 let volumeBtn;
 let volumeBar;
+let volumeContainer;
 let throwTimer = null;
 let throwStart = 0;
-let maxThrowTime = 2000; // 最大投掷时间（毫秒）
-let minVolume = 0.0;
-let maxVolume = 1.0;
-let defaultVolume = 0.2;
+const maxThrowTime = 2000;
+const minVolume = 0.0;
+const maxVolume = 1.0;
+const defaultVolume = 0.2;
 let isLongPress = false;
-let longPressThreshold = 200; // 超过200ms判定为长按
+const longPressThreshold = 200;
 let longPressTimeout = null;
 let hasStarted = false;
+let currentVolume = defaultVolume;
 
 function setupMusicPlayer() {
     audio = document.getElementById('main-audio');
     volumeBtn = document.getElementById('volume-btn');
     volumeBar = document.getElementById('volume-bar');
+    volumeContainer = volumeBar?.parentElement;
+    
     if (!audio || !volumeBtn || !volumeBar) return;
 
-    // 设置初始音量为0.2，避免无声
+    // 设置初始音量
     audio.playbackRate = 1.0;
     audio.volume = defaultVolume;
     audio.loop = true;
-    volumeBar.style.width = (audio.volume * 100) + '%';
+    currentVolume = defaultVolume;
+    updateVolumeUI(currentVolume);
 
-    // 用户首次交互后强制播放
+    // 用户首次交互后播放
     function startAudio() {
         if (!hasStarted) {
             audio.play().catch(() => { });
@@ -34,43 +43,138 @@ function setupMusicPlayer() {
     }
     document.body.addEventListener('mousedown', startAudio, { once: true });
     document.body.addEventListener('touchstart', startAudio, { once: true });
+    document.body.addEventListener('keydown', startAudio, { once: true });
 
-    // 音量键仅支持长按调节，点击即静音
-    volumeBtn.addEventListener('mousedown', function (e) {
-        isLongPress = false;
-        throwStart = Date.now();
-        longPressTimeout = setTimeout(() => {
-            isLongPress = true;
-            throwTimer = setInterval(() => {
-                let t = Date.now() - throwStart;
-                t = Math.min(t, maxThrowTime);
-                let v = minVolume + (maxVolume - minVolume) * (t / maxThrowTime);
-                audio.volume = v;
-                volumeBar.style.width = (v * 100) + '%';
-            }, 16);
-        }, longPressThreshold);
-    });
-    document.addEventListener('mouseup', function (e) {
-        clearTimeout(longPressTimeout);
-        if (throwTimer) {
-            clearInterval(throwTimer);
-            throwTimer = null;
-        }
-        if (!isLongPress) {
-            // 点击即静音
-            audio.volume = minVolume;
-            volumeBar.style.width = '0%';
-        }
-    });
+    // 鼠标事件
+    volumeBtn.addEventListener('mousedown', handlePressStart);
+    document.addEventListener('mouseup', handlePressEnd);
+    
+    // 触摸事件
+    volumeBtn.addEventListener('touchstart', handleTouchStart, { passive: false });
+    document.addEventListener('touchend', handlePressEnd);
 
-    // 悬停提示文字
+    // 键盘支持
+    volumeBtn.addEventListener('keydown', handleKeydown);
+
+    // 悬停提示
     const volumeTip = document.getElementById('volume-tip');
-    volumeBtn.addEventListener('mouseenter', function () {
+    volumeBtn.addEventListener('mouseenter', () => {
         if (volumeTip) volumeTip.style.display = 'block';
     });
-    volumeBtn.addEventListener('mouseleave', function () {
+    volumeBtn.addEventListener('mouseleave', () => {
         if (volumeTip) volumeTip.style.display = 'none';
     });
+    volumeBtn.addEventListener('focus', () => {
+        if (volumeTip) volumeTip.style.display = 'block';
+    });
+    volumeBtn.addEventListener('blur', () => {
+        if (volumeTip) volumeTip.style.display = 'none';
+    });
+}
+
+function handleTouchStart(e) {
+    e.preventDefault();
+    handlePressStart(e);
+}
+
+function handlePressStart(e) {
+    isLongPress = false;
+    throwStart = Date.now();
+    
+    longPressTimeout = setTimeout(() => {
+        isLongPress = true;
+        throwTimer = setInterval(() => {
+            let t = Date.now() - throwStart;
+            t = Math.min(t, maxThrowTime);
+            currentVolume = minVolume + (maxVolume - minVolume) * (t / maxThrowTime);
+            audio.volume = currentVolume;
+            updateVolumeUI(currentVolume);
+        }, 16);
+    }, longPressThreshold);
+}
+
+function handlePressEnd() {
+    clearTimeout(longPressTimeout);
+    if (throwTimer) {
+        clearInterval(throwTimer);
+        throwTimer = null;
+    }
+    if (!isLongPress) {
+        // 短按切换静音
+        if (audio.volume > 0) {
+            audio.volume = minVolume;
+            updateVolumeUI(0);
+            updateButtonIcon(true);
+        } else {
+            audio.volume = currentVolume || defaultVolume;
+            updateVolumeUI(currentVolume || defaultVolume);
+            updateButtonIcon(false);
+        }
+    }
+}
+
+function handleKeydown(e) {
+    switch (e.key) {
+        case 'ArrowUp':
+        case 'ArrowRight':
+            e.preventDefault();
+            adjustVolume(0.1);
+            break;
+        case 'ArrowDown':
+        case 'ArrowLeft':
+            e.preventDefault();
+            adjustVolume(-0.1);
+            break;
+        case ' ':
+        case 'Enter':
+            e.preventDefault();
+            toggleMute();
+            break;
+        case 'm':
+        case 'M':
+            e.preventDefault();
+            toggleMute();
+            break;
+    }
+}
+
+function adjustVolume(delta) {
+    currentVolume = Math.max(minVolume, Math.min(maxVolume, currentVolume + delta));
+    audio.volume = currentVolume;
+    updateVolumeUI(currentVolume);
+    updateButtonIcon(currentVolume === 0);
+    
+    // 更新ARIA属性
+    if (volumeContainer) {
+        volumeContainer.setAttribute('aria-valuenow', Math.round(currentVolume * 100));
+    }
+}
+
+function toggleMute() {
+    if (audio.volume > 0) {
+        audio.volume = 0;
+        updateVolumeUI(0);
+        updateButtonIcon(true);
+    } else {
+        audio.volume = currentVolume || defaultVolume;
+        updateVolumeUI(currentVolume || defaultVolume);
+        updateButtonIcon(false);
+    }
+}
+
+function updateVolumeUI(volume) {
+    volumeBar.style.width = (volume * 100) + '%';
+    if (volumeContainer) {
+        volumeContainer.setAttribute('aria-valuenow', Math.round(volume * 100));
+    }
+}
+
+function updateButtonIcon(isMuted) {
+    const iconSpan = volumeBtn.querySelector('span[aria-hidden]');
+    if (iconSpan) {
+        iconSpan.textContent = isMuted ? '🔇' : '🔊';
+    }
+    volumeBtn.setAttribute('aria-label', isMuted ? '已静音 - 点击或按空格取消静音' : '音量控制 - 点击静音，方向键调节音量');
 }
 
 document.addEventListener('DOMContentLoaded', setupMusicPlayer);
