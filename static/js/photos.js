@@ -14,24 +14,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const lightboxImage = document.getElementById('lightboxImage');
     const imageWrapper = document.getElementById('imageWrapper');
 
-    // 1. 生成占位图片库（模拟不同比例的图片，展示瀑布流不裁剪的特性）
-    // 在实际使用中，你可以将这些 URL 替换为自己的图片路径
-    const photoData = [
-        { width: 800, height: 1200, seed: '10' }, // 竖图
-        { width: 1000, height: 600, seed: '20' }, // 横图
-        { width: 800, height: 800, seed: '33' },  // 方图
-        { width: 600, height: 900, seed: '45' },  // 竖图
-        { width: 1200, height: 800, seed: '58' }, // 横图
-        { width: 700, height: 1000, seed: '62' }, // 竖图
-        { width: 900, height: 600, seed: '77' },  // 横图
-        { width: 800, height: 1100, seed: '88' }, // 竖图
-        { width: 1000, height: 1000, seed: '99' },// 方图
+    // 1. 本地图片库
+    const photoList = [
+        'imerge/photos/mmexport1755526283183.jpg',
+        'imerge/photos/retouch_2025081821531516.jpg',
+        'imerge/photos/mmexport1755526279831.jpg',
+        'imerge/photos/mmexport1753090402836.jpg',        
+        'imerge/photos/mmexport1691769846850.jpg',
+        'imerge/photos/mmexport1692063055193.jpg',        
+        'imerge/photos/mmexport1710254131896.jpg',
+        'imerge/photos/mmexport1755526288439.jpg',
+        'imerge/photos/IMG_20230821_155652_edit_549426361832179.jpg',
+        'imerge/photos/IMG_20230821_155619_edit_549514766498292.jpg',
+        'imerge/photos/IMG_20230821_155546_edit_549575291395456.jpg',
+        'imerge/photos/IMG_20230821_155455_edit_549635885429704.jpg',
+        'imerge/photos/retouch_2025040522581844.jpg',
+        'imerge/photos/retouch_2024082621142552.jpg',
+        'imerge/photos/IMG_20230910_221104.jpg',
+        'imerge/photos/retouch_2024082621114038.jpg',
+        'imerge/photos/retouch_2024082621123110.jpg',
+        'imerge/photos/img_20210802_120614.jpg',
+
     ];
 
     function renderGallery() {
-        photoData.forEach(data => {
-            // 使用 picsum 提供随机但固定 seed 的高质量图片作为占位
-            const imgSrc = `https://picsum.photos/seed/${data.seed}/${data.width}/${data.height}`;
+        photoList.forEach(imgSrc => {
             
             // 最外层容器：负责卡片样式和滚动动画
             const item = document.createElement('div');

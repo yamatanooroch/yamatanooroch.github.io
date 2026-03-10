@@ -27,6 +27,7 @@
     <!-- Core theme CSS (includes Bootstrap)-->
     <link type="text/css" href="static/css/styles.css" rel="stylesheet" />
     <link type="text/css" href="static/css/main.css" rel="stylesheet" />
+    <link rel="stylesheet" href="static/css/router-transition.css" />
 
     <!-- Bootstrap core JS-->
     <script type="text/javascript" src="static/js/bootstrap.bundle.min.js"></script>
@@ -105,7 +106,7 @@
                         <a class="nav-link me-lg-3" href="#publications">PUBLICATIONS</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link me-lg-3 btn btn-outline-primary" href="index.html">RETURN</a>
+                        <a class="nav-link me-lg-3 btn btn-outline-primary" href="javascript:void(0)" onclick="routeTo('index.html')">RETURN</a>
                     </li>
                 </ul>
             </div>
@@ -190,6 +191,7 @@
         </div>
     </footer>
 
+    <script src="static/js/page-router.js"></script>
 </body>
 
 </html>

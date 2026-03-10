@@ -9,6 +9,7 @@
     <link type="text/css" href="static/css/styles.css" rel="stylesheet" />
     <link rel="stylesheet" href="static/css/index.css" />
     <link rel="stylesheet" href="static/css/page-transition.css" />
+    <link rel="stylesheet" href="static/css/router-transition.css" />
     <style>
         /* 文字间距样式 - 替代&nbsp */
         .text-indent-sm { margin-left: 1em; }
@@ -110,7 +111,7 @@
             <div class="right-geo">
                 <img src="imerge/mogu.png" id="mogu-img" alt="互动蘑菇图案 - 鼠标悬停会移动" />
             </div>
-            <button class="contact-btn" onclick="window.location.href='intro.html'" aria-label="查看简介">introduction</button>
+            <button class="contact-btn" onclick="routeTo('intro.html')" aria-label="查看简介">introduction</button>
             <div class="bottom-tip" onclick="scrollToAscii()" role="button" tabindex="0" 
                  onkeydown="if(event.key==='Enter')scrollToAscii()" aria-label="滚动到ASCII动画页面">
                 SCROLL CAREFULLY, IT'S SMOOTH<br>小・心・地・滑
@@ -158,11 +159,11 @@
             <nav class="center-nav" aria-label="页面导航" style="pointer-events: auto;">
                 <div class="nav-menu" role="menubar">
                     <!-- 改为跳转到 intro.html -->
-                    <div class="nav-item active" role="menuitem" tabindex="0" onclick="window.location.href='intro.html'" onkeydown="if(event.key==='Enter')window.location.href='intro.html'">
+                    <div class="nav-item active" role="menuitem" tabindex="0" onclick="routeTo('intro.html')" onkeydown="if(event.key==='Enter')routeTo('intro.html')">
                         <span class="chinese">主页</span>HOME
                     </div>
                     <!-- 删除了视频按钮 -->
-                    <div class="nav-item" role="menuitem" tabindex="0" onclick="window.location.href='photos.html'" onkeydown="if(event.key==='Enter')window.location.href='photos.html'">
+                    <div class="nav-item" role="menuitem" tabindex="0" onclick="routeTo('photos.html')" onkeydown="if(event.key==='Enter')routeTo('photos.html')">
                         <span class="chinese">图片</span>PHOTOS
                     </div>
                     <div class="nav-item" role="menuitem" tabindex="0" onclick="showContactAlert()" onkeydown="if(event.key==='Enter')showContactAlert()">
@@ -216,24 +217,25 @@
         <div class="scrolling-text-container" aria-hidden="true">
             <!-- 奇数行向左滚动 -->
             <div class="text-row odd-row">
-                <div class="scrolling-text left">VIEW FIRST VISUAL FIRST VIEW FIRST VISUAL FIRST VIEW FIRST VISUAL FIRST
-                    VIEW FIRST VISUAL FIRST </div>
+                <div class="scrolling-text left">TRY CLICK TRY CLICK TRY CLICK TRY CLICK TRY CLICK TRY CLICK TRY CLICK TRY CLICK
+                    TRY CLICK TRY CLICK </div>
+                    
             </div>
             <div class="text-row even-row">
                 <div class="scrolling-text right">STARE VISUAL STARE VISUAL STARE VISUAL STARE VISUAL STARE VISUAL STARE
                     VISUAL STARE </div>
             </div>
             <div class="text-row odd-row">
-                <div class="scrolling-text left">VIEW FIRST VISUAL FIRST VIEW FIRST VISUAL FIRST VIEW FIRST VISUAL FIRST
-                    VIEW FIRST VISUAL FIRST </div>
+                <div class="scrolling-text left">TRY CLICK TRY CLICK TRY CLICK TRY CLICK TRY CLICK TRY CLICK TRY CLICK TRY CLICK
+                    TRY CLICK TRY CLICK </div>
             </div>
             <div class="text-row even-row">
                 <div class="scrolling-text right">STARE VISUAL STARE VISUAL STARE VISUAL STARE VISUAL STARE VISUAL STARE
                     VISUAL STARE VISUAL STARE </div>
             </div>
             <div class="text-row odd-row">
-                <div class="scrolling-text left">VIEW FIRST VISUAL FIRST VIEW FIRST VISUAL FIRST VIEW FIRST VISUAL FIRST
-                    VIEW FIRST VISUAL FIRST </div>
+                <div class="scrolling-text left">TRY CLICK TRY CLICK TRY CLICK TRY CLICK TRY CLICK TRY CLICK TRY CLICK TRY CLICK
+                    TRY CLICK TRY CLICK </div>
             </div>
             <div class="text-row even-row">
                 <div class="scrolling-text right">STARE VISUAL STARE VISUAL STARE VISUAL STARE VISUAL STARE VISUAL STARE
@@ -271,9 +273,9 @@
     <!-- 恭喜弹窗 -->
     <div id="congratulationModal" class="modal" role="dialog" aria-labelledby="modal-title" aria-modal="true">
         <div class="modal-content">
-            <h2 id="modal-title">🎉 CONGRATULATIONS! 🎉</h2>
+            <h2 id="modal-title"> CONGRATULATIONS! </h2>
             <p>You've lit up all the bulbs!</p>
-            <p>你好闲！💡</p>
+            <p>你好闲！</p>
             <button onclick="closeModal()" aria-label="关闭弹窗">Continue</button>
         </div>
     </div>
@@ -291,6 +293,7 @@
     <script type="module" src="static/js/main.js"></script>
     <script src="static/js/music-player.js"></script>
     <script src="static/js/page-transition.js" type="module"></script>
+    <script src="static/js/page-router.js"></script>
     
     <!-- 页面指示器交互 -->
     <script>
@@ -323,7 +326,5 @@
         });
     </script>
 </body>
-
-</html>
 
 </html>

@@ -7,6 +7,7 @@
     <title>Photos - Cyberpunk Gallery</title>
     <link type="text/css" href="static/css/styles.css" rel="stylesheet" />
     <link rel="stylesheet" href="static/css/photos.css" />
+    <link rel="stylesheet" href="static/css/router-transition.css" />
 </head>
 
 <body>
@@ -17,8 +18,8 @@
     <!-- CRT 扫描线遮罩 -->
     <div class="crt-overlay"></div>
 
-    <!-- 返回按钮 -->
-    <button class="back-btn" onclick="window.location.href='index.html'" aria-label="返回主页">
+    <!-- 返回按钮，通过URL参数带上页面索引 -->
+    <button class="back-btn" onclick="routeTo('index.html?page=2')" aria-label="返回联系页">
         <span class="glitch-text" data-text="< BACK"><span>&lt; BACK</span></span>
     </button>
 
@@ -43,6 +44,7 @@
         </div>
     </div>
 
+    <script src="static/js/page-router.js"></script>
     <script src="static/js/photos.js"></script>
 </body>
 

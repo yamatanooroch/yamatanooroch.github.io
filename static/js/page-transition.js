@@ -39,8 +39,19 @@ class PageTransition {
         // 绑定事件
         this.bindEvents();
         
-        // 初始化第一个页面
-        this.showPage(0, 'none');
+        // 初始化第一个页面（支持通过 URL 参数直接定位）
+        const urlParams = new URLSearchParams(window.location.search);
+        let initPage = parseInt(urlParams.get('page'));
+        
+        // 校验合法性，不合法则默认第0页
+        if (isNaN(initPage) || initPage < 0 || initPage >= this.sections.length) {
+            initPage = 0;
+        }
+        
+        // 修改历史记录，清除带参数的URL使得刷新时不带参数（如果需要的话，或者保留）
+        // window.history.replaceState({}, '', window.location.pathname);
+        
+        this.showPage(initPage, 'none');
         
         // 暴露全局滚动函数
         this.exposeGlobalFunctions();
@@ -297,6 +308,11 @@ class PageTransition {
         });
         
         this.currentPageIndex = index;
+        
+        // 确保初次加载时触发自定义事件，以便其他模块（如City3D、EyeTracking等）能正确初始化
+        setTimeout(() => {
+            this.dispatchPageChangeEvent(index);
+        }, 100);
     }
     
     dispatchPageChangeEvent(pageIndex) {

@@ -8,6 +8,7 @@ import { PhysicsEngine } from './physics-engine.js';
 import { AsciiAnimation } from './ascii-animation.js';
 import { EyeTracking } from './eye-tracking.js';
 import { City3D } from './city3d.js';
+import { CodeFireworks } from './fireworks.js';
 import { 
     StarRotation, 
     MoguAnimation, 
@@ -24,7 +25,8 @@ let app = {
     starRotation: null,
     moguAnimation: null,
     navAnimation: null,
-    city3D: null
+    city3D: null,
+    codeFireworks: null
 };
 
 /**
@@ -63,6 +65,11 @@ function initApp() {
     
     // 初始化眼球跟踪
     app.eyeTracking = new EyeTracking();
+    
+    // 初始化代码烟花（第五页）
+    app.codeFireworks = new CodeFireworks({
+        containerSelector: '.view-section'
+    });
 }
 
 /**

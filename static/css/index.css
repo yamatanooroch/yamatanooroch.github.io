@@ -66,65 +66,144 @@ body {
     box-sizing: border-box;
 }
 
+/* ===== 赛博朋克终端边框 ===== */
 .window-frame {
     width: 100%;
     height: 100%;
-    border: 3px solid #14ffeb;
-    border-radius: 12px;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(5, 5, 10, 0.92);
     position: relative;
-    box-shadow: 0 0 20px rgba(20, 255, 235, 0.4),
-        inset 0 0 20px rgba(20, 255, 235, 0.1);
     overflow: hidden;
+    /* 切角矩形 - 左上/右下 45° 倒角 */
+    clip-path: polygon(
+        24px 0%, 100% 0%,
+        100% calc(100% - 24px), calc(100% - 24px) 100%,
+        0% 100%, 0% 24px
+    );
+    /* 不用 border，改用 outline + 内阴影模拟双层边框 */
+    box-shadow:
+        0 0 1px 1px rgba(20, 255, 235, 0.8),
+        0 0 15px rgba(20, 255, 235, 0.3),
+        0 0 40px rgba(20, 255, 235, 0.1),
+        inset 0 0 30px rgba(20, 255, 235, 0.05);
+    animation: terminalBreathe 4s ease-in-out infinite;
 }
 
+/* 呼吸光效 */
+@keyframes terminalBreathe {
+    0%, 100% { box-shadow: 0 0 1px 1px rgba(20,255,235,0.8), 0 0 15px rgba(20,255,235,0.3), 0 0 40px rgba(20,255,235,0.1), inset 0 0 30px rgba(20,255,235,0.05); }
+    50%      { box-shadow: 0 0 2px 2px rgba(20,255,235,1),   0 0 25px rgba(20,255,235,0.5), 0 0 60px rgba(20,255,235,0.15), inset 0 0 40px rgba(20,255,235,0.08); }
+}
+
+/* 内部边框线（用 ::before 模拟描边，因为 clip-path 会裁切 border） */
+.window-frame::before {
+    content: '';
+    position: absolute;
+    top: 2px; left: 2px; right: 2px; bottom: 2px;
+    clip-path: polygon(
+        22px 0%, 100% 0%,
+        100% calc(100% - 22px), calc(100% - 22px) 100%,
+        0% 100%, 0% 22px
+    );
+    border: 1.5px solid rgba(20, 255, 235, 0.5);
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* 水平扫描线 - 从上到下循环 */
+.window-frame::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(20, 255, 235, 0.4), transparent);
+    box-shadow: 0 0 12px rgba(20, 255, 235, 0.3);
+    z-index: 4;
+    animation: scanSweep 6s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes scanSweep {
+    0%   { top: -2px; opacity: 0; }
+    5%   { opacity: 1; }
+    95%  { opacity: 1; }
+    100% { top: 100%; opacity: 0; }
+}
+
+/* ===== 终端标题栏 ===== */
 .window-header {
-    height: 35px;
-    background: linear-gradient(to bottom, #14ffeb, #0dcaf0);
-    border-radius: 8px 8px 0 0;
+    height: 40px;
+    background: linear-gradient(180deg, rgba(20, 255, 235, 0.08) 0%, rgba(5, 5, 10, 0.95) 100%);
+    border-bottom: 1px solid rgba(20, 255, 235, 0.4);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 15px;
+    padding: 0 18px;
     position: relative;
+    z-index: 3;
 }
 
+/* 左侧状态指示灯 */
 .window-controls {
     display: flex;
+    align-items: center;
     gap: 8px;
 }
 
 .window-control {
-    width: 12px;
-    height: 12px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     cursor: pointer;
-    background: #000000;
+    background: #14ffeb;
+    box-shadow: 0 0 6px #14ffeb, 0 0 12px rgba(20, 255, 235, 0.4);
+    animation: statusPulse 2s ease-in-out infinite;
 }
 
+.window-control:nth-child(2) {
+    background: #ff00ff;
+    box-shadow: 0 0 6px #ff00ff, 0 0 12px rgba(255, 0, 255, 0.4);
+    animation-delay: 0.3s;
+}
+
+.window-control:nth-child(3) {
+    background: #ffff00;
+    box-shadow: 0 0 6px #ffff00, 0 0 12px rgba(255, 255, 0, 0.4);
+    animation-delay: 0.6s;
+}
+
+@keyframes statusPulse {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50%      { opacity: 1;   transform: scale(1.2); }
+}
+
+/* 右侧窗口控制按钮 */
 .window-buttons {
     display: flex;
-    gap: 5px;
+    gap: 6px;
 }
 
 .window-btn {
-    width: 30px;
-    height: 20px;
+    width: 28px;
+    height: 18px;
     background: transparent;
-    border: 3px solid #000000;
-    color: #000000;
+    border: 1.5px solid rgba(20, 255, 235, 0.5);
+    color: rgba(20, 255, 235, 0.7);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: bold;
-    transition: all 0.2s;
+    transition: all 0.25s ease;
+    font-family: 'Courier New', monospace;
 }
 
 .window-btn:hover {
-    background: #14ffeb;
-    color: #000;
+    background: rgba(20, 255, 235, 0.15);
+    border-color: #14ffeb;
+    color: #14ffeb;
+    box-shadow: 0 0 8px rgba(20, 255, 235, 0.4);
 }
 
 .btn-minimize::before {
@@ -139,21 +218,41 @@ body {
     content: '×';
 }
 
+/* 标题文字 - 终端风格 */
 .window-title {
-    color: #ffffff;
-    font-family: Impact, Arial Black, Arial, sans-serif;
-    font-size: 30px;
+    color: #14ffeb;
+    font-family: 'Courier New', 'Consolas', monospace;
+    font-size: 14px;
     font-weight: bold;
+    letter-spacing: 3px;
+    text-transform: uppercase;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+    text-shadow: 0 0 8px rgba(20, 255, 235, 0.6);
+    white-space: nowrap;
 }
 
+/* 标题闪烁光标 */
+.window-title::after {
+    content: '_';
+    animation: cursorBlink 1s step-end infinite;
+    margin-left: 2px;
+    color: #ff00ff;
+    text-shadow: 0 0 8px rgba(255, 0, 255, 0.6);
+}
+
+@keyframes cursorBlink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+/* ===== ASCII 显示区域 (内容不变，仅微调边框衔接) ===== */
 .ascii-display {
     width: 100%;
-    height: calc(100% - 35px);
-    background: #000;
-    border-radius: 0 0 8px 8px;
+    height: calc(100% - 40px);
+    background: rgba(0, 0, 0, 0.95);
+    border-radius: 0;
     padding: 10px;
     margin: 0;
     display: flex;
@@ -161,6 +260,8 @@ body {
     justify-content: center;
     overflow: hidden;
     box-sizing: border-box;
+    /* 微妙的内发光 */
+    box-shadow: inset 0 2px 15px rgba(20, 255, 235, 0.05);
 }
 
 .left-img {
@@ -663,11 +764,28 @@ body {
     
     /* ASCII页面 */
     .ascii-container {
-        padding: 20px;
+        padding: 15px;
+    }
+    
+    .window-frame {
+        clip-path: polygon(
+            16px 0%, 100% 0%,
+            100% calc(100% - 16px), calc(100% - 16px) 100%,
+            0% 100%, 0% 16px
+        );
+    }
+
+    .window-frame::before {
+        clip-path: polygon(
+            14px 0%, 100% 0%,
+            100% calc(100% - 14px), calc(100% - 14px) 100%,
+            0% 100%, 0% 14px
+        );
     }
     
     .window-title {
-        font-size: 18px;
+        font-size: 11px;
+        letter-spacing: 2px;
     }
     
     #asciiContainer {
